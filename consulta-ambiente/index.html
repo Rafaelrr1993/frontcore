@@ -1,0 +1,50 @@
+<meta charset="utf-8">
+<title>Consulta Ambiente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+<link rel="stylesheet" href="style.css">
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="back-row"><a class="back" href="../">← FrontCore</a></div>
+    <h1>CONSULTA AMBIENTE</h1>
+    <p class="subtitle">Consulte o ambiente, loja e filial cadastrados pelo CNPJ.</p>
+  </div>
+</header>
+
+<main>
+  <label class="field-label" for="cnpj-input">CNPJ</label>
+  <div class="search-row">
+    <input type="text" id="cnpj-input" placeholder="00.000.000/0000-00" inputmode="numeric" autocomplete="off">
+    <button type="button" class="btn-consultar" id="btn-consultar">CONSULTAR</button>
+  </div>
+
+  <p class="message" id="message" hidden></p>
+
+  <div class="result-card" id="result-card" hidden>
+    <div class="cnpj-block">
+      <div class="label-eyebrow">CNPJ</div>
+      <div class="cnpj-value" id="cnpj-value">—</div>
+    </div>
+    <div class="ambiente-card" id="ambiente-card">
+      <div class="label-eyebrow">AMBIENTE</div>
+      <div class="ambiente-value" id="ambiente-value">—</div>
+    </div>
+    <div class="detail-row">
+      <div>
+        <div class="label-eyebrow">Nº DA LOJA</div>
+        <div class="detail-value" id="loja-value">—</div>
+      </div>
+      <div>
+        <div class="label-eyebrow">CÓDIGO DA FILIAL</div>
+        <div class="detail-value" id="filial-value">—</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<p class="footnote">Roda 100% no seu navegador — nenhum CNPJ é enviado a servidor algum. · <a href="../">← Voltar ao FrontCore</a></p>
+
+<script type="module" src="js/app.js"></script>
