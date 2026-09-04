@@ -1,0 +1,119 @@
+/* -------------------------------------------------------------------
+   theme.css — Design tokens compartilhados por todo o FrontCore.
+   Copiados de CriadorDeCupons/avanco_theme.py (Avanço Style Guide,
+   Frontify, 04/09/2025). Light = valores literais do guia. Dark =
+   extensão tonal M3 dos mesmos matizes (o guia não define modo escuro).
+   ------------------------------------------------------------------- */
+:root {
+  --primary: #0005AA;
+  --on-primary: #FFFFFF;
+  --primary-container: #E0E0FF;
+  --on-primary-container: #00026C;
+
+  --secondary: #5C5D72;
+  --on-secondary: #FFFFFF;
+  --secondary-container: #E1E0F9;
+  --on-secondary-container: #191A2C;
+
+  --tertiary: #566500;
+  --on-tertiary: #FFFFFF;
+  --tertiary-container: #D7EE69;
+  --on-tertiary-container: #181E00;
+
+  --surface: #FCF8FD;
+  --surface-container-lowest: #FFFFFF;
+  --surface-container-low: #F6F2F7;
+  --surface-container: #F0EDF1;
+  --surface-container-high: #EAE7EC;
+
+  --on-surface: #1B1B1F;
+  --on-surface-variant: #46464F;
+  --outline: #777680;
+  --outline-variant: #C7C5D0;
+
+  --font-display: "Titillium Web", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Open Sans", "Segoe UI", system-ui, sans-serif;
+
+  --space-xs: 4px;
+  --space-s: 8px;
+  --space-m: 12px;
+  --space-l: 16px;
+  --space-xl: 24px;
+  --space-xxl: 32px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --primary: #BAC3FF;
+    --on-primary: #131A8E;
+    --primary-container: #262DC4;
+    --on-primary-container: #E0E0FF;
+
+    --secondary: #C5C4DD;
+    --on-secondary: #2E2F42;
+    --secondary-container: #444559;
+    --on-secondary-container: #E1E0F9;
+
+    --tertiary: #BCCE55;
+    --on-tertiary: #2C3600;
+    --tertiary-container: #404C00;
+    --on-tertiary-container: #D7EE69;
+
+    --surface: #121215;
+    --surface-container-lowest: #0C0C0E;
+    --surface-container-low: #1B1B1F;
+    --surface-container: #202024;
+    --surface-container-high: #2A2A2F;
+
+    --on-surface: #E5E1E6;
+    --on-surface-variant: #C7C5D0;
+    --outline: #91909A;
+    --outline-variant: #46464F;
+  }
+}
+
+:root[data-theme="dark"] {
+  --primary: #BAC3FF;
+  --on-primary: #131A8E;
+  --primary-container: #262DC4;
+  --on-primary-container: #E0E0FF;
+
+  --secondary: #C5C4DD;
+  --on-secondary: #2E2F42;
+  --secondary-container: #444559;
+  --on-secondary-container: #E1E0F9;
+
+  --tertiary: #BCCE55;
+  --on-tertiary: #2C3600;
+  --tertiary-container: #404C00;
+  --on-tertiary-container: #D7EE69;
+
+  --surface: #121215;
+  --surface-container-lowest: #0C0C0E;
+  --surface-container-low: #1B1B1F;
+  --surface-container: #202024;
+  --surface-container-high: #2A2A2F;
+
+  --on-surface: #E5E1E6;
+  --on-surface-variant: #C7C5D0;
+  --outline: #91909A;
+  --outline-variant: #46464F;
+}
+
+* { box-sizing: border-box; }
+
+html { color-scheme: light dark; }
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
+
+body {
+  background: var(--surface);
+  color: var(--on-surface);
+  font-family: var(--font-body);
+  margin: 0;
+}
+
+a { color: var(--primary); }
+:root:not([data-theme="light"]) a { color: var(--primary); }
+
+::selection { background: var(--primary-container); color: var(--on-primary-container); }

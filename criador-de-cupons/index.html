@@ -1,0 +1,210 @@
+<meta charset="utf-8">
+<title>Criador de Cupons</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+<link rel="stylesheet" href="style.css">
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="back" href="../">← FrontCore</a>
+    <h1>Criador de Cupons</h1>
+    <span class="subtitle">Recriação e geração de cupons NFC-e</span>
+  </div>
+</header>
+
+<main>
+  <section class="intro">
+    <h2>O que é</h2>
+    <p>
+      Monta o arquivo de cupom fiscal (texto de largura fixa + XML da NFC-e anexado) que o
+      sistema do PDV grava — sem precisar digitar campo por campo. Roda inteiramente no seu
+      navegador: o XML que você cola e o cupom gerado nunca saem da sua máquina, nada é
+      enviado a nenhum servidor.
+    </p>
+    <div class="mode-grid">
+      <div class="mode-card">
+        <h3>Recriar a partir de modelo</h3>
+        <p>
+          Copia um cupom-modelo já existente e correto, trocando só o número do cupom, a
+          chave de acesso e o XML anexado. Uso: reenvio da mesma venda com número novo
+          (ex. depois de "problemas com a rede").
+        </p>
+      </div>
+      <div class="mode-card">
+        <h3>Gerar cupom completo</h3>
+        <p>
+          Monta o cabeçalho do cupom inteiro, campo a campo, só a partir do XML — não
+          precisa de um cupom-modelo.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="tabs">
+    <div class="tab-list" role="tablist">
+      <button class="tab-btn" id="tab-recriar" type="button" role="tab" aria-selected="true" aria-controls="panel-recriar">Recriar a partir de modelo</button>
+      <button class="tab-btn" id="tab-gerar" type="button" role="tab" aria-selected="false" aria-controls="panel-gerar">Gerar cupom completo</button>
+    </div>
+
+    <!-- ==================== ABA 1 ==================== -->
+    <div class="tab-panel" id="panel-recriar" role="tabpanel" aria-labelledby="tab-recriar">
+      <fieldset class="step">
+        <legend>1. Cupom-modelo (arquivo existente e correto)</legend>
+        <div class="file-row">
+          <input type="text" id="r-template-name" readonly placeholder="Nenhum arquivo selecionado">
+          <input type="file" id="r-template-file" hidden>
+          <button type="button" class="btn btn-secondary" id="r-template-btn">Selecionar arquivo...</button>
+        </div>
+      </fieldset>
+
+      <fieldset class="step">
+        <legend>2. Cole aqui o XML do novo cupom (Ctrl+V)</legend>
+        <textarea class="xml-input mono" id="r-xml" spellcheck="false" placeholder="<nfeProc>...</nfeProc>"></textarea>
+      </fieldset>
+
+      <div class="field-row">
+        <label for="r-special">Linha especial no topo do cupom:</label>
+        <select id="r-special">
+          <option value="keep" selected>Igual ao modelo (padrão)</option>
+          <option value="none">Nenhuma</option>
+          <option value="35CANCELAMENTO SUBSTITUICAO">35CANCELAMENTO SUBSTITUICAO</option>
+          <option value="03EXCLUIDO">03EXCLUIDO</option>
+          <option value="03EXCLUIDO PENDENTE">03EXCLUIDO PENDENTE</option>
+        </select>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn btn-primary" id="r-gerar">Gerar prévia</button>
+        <button type="button" class="btn btn-secondary" id="r-limpar">Limpar</button>
+        <button type="button" class="btn btn-primary" id="r-salvar" disabled>Baixar arquivo</button>
+      </div>
+
+      <div class="error-banner" id="r-error" hidden></div>
+      <pre class="summary" id="r-summary"></pre>
+      <div class="warnings" id="r-warnings" hidden>
+        <div class="warnings-title">⚠ Avisos — confira antes de usar este cupom:</div>
+        <ul id="r-warnings-list"></ul>
+      </div>
+
+      <fieldset class="step">
+        <legend>3. Prévia do novo cupom (revise antes de baixar)</legend>
+        <div class="preview-wrap"><pre class="preview" id="r-preview"></pre></div>
+      </fieldset>
+    </div>
+
+    <!-- ==================== ABA 2 ==================== -->
+    <div class="tab-panel" id="panel-gerar" role="tabpanel" aria-labelledby="tab-gerar" hidden>
+      <p class="hint">
+        Monta o cabeçalho do cupom inteiro só com o XML — não precisa de um cupom-modelo.
+        Alguns poucos campos não existem no XML da NFC-e (contador interno do PDV, dados de
+        cartão/TEF, catálogo de produtos da loja) e ficam com um valor padrão — sempre
+        sinalizado nos avisos abaixo. Revise antes de usar o cupom.
+      </p>
+
+      <fieldset class="step">
+        <legend>1. Cole aqui o XML completo da NFC-e (Ctrl+V)</legend>
+        <textarea class="xml-input mono" id="g-xml" spellcheck="false" placeholder="<nfeProc>...</nfeProc>"></textarea>
+      </fieldset>
+
+      <div class="field-row">
+        <label for="g-special">Linha especial no topo do cupom:</label>
+        <select id="g-special">
+          <option value="none" selected>Nenhuma</option>
+          <option value="35CANCELAMENTO SUBSTITUICAO">35CANCELAMENTO SUBSTITUICAO</option>
+          <option value="03EXCLUIDO">03EXCLUIDO</option>
+          <option value="03EXCLUIDO PENDENTE">03EXCLUIDO PENDENTE</option>
+        </select>
+        <label for="g-loja">Número da loja:</label>
+        <input type="text" id="g-loja" size="4" maxlength="2" inputmode="numeric">
+        <span class="hint">(só p/ nome do arquivo — não existe no XML)</span>
+      </div>
+
+      <div class="field-row">
+        <label for="g-cod-pagto">Código forma pagto:</label>
+        <input type="text" id="g-cod-pagto" size="6" maxlength="4">
+        <label for="g-desc-pagto">Descrição:</label>
+        <input type="text" id="g-desc-pagto" size="24" maxlength="30">
+        <span class="hint">(só preencha se o aviso pedir — o programa memoriza neste navegador e não pede mais pra essa loja)</span>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn btn-primary" id="g-gerar">Gerar prévia</button>
+        <button type="button" class="btn btn-secondary" id="g-limpar">Limpar</button>
+        <button type="button" class="btn btn-primary" id="g-salvar" disabled>Baixar arquivo</button>
+      </div>
+
+      <div class="error-banner" id="g-error" hidden></div>
+      <pre class="summary" id="g-summary"></pre>
+      <div class="warnings" id="g-warnings" hidden>
+        <div class="warnings-title">⚠ Avisos — confira antes de usar este cupom:</div>
+        <ul id="g-warnings-list"></ul>
+      </div>
+
+      <fieldset class="step">
+        <legend>2. Prévia do cupom gerado (revise antes de baixar)</legend>
+        <div class="preview-wrap"><pre class="preview" id="g-preview"></pre></div>
+      </fieldset>
+    </div>
+  </section>
+
+  <section class="help-section">
+    <details class="help">
+      <summary>Ajuda — Como usar "Recriar a partir de modelo"</summary>
+      <ol>
+        <li>Em <strong>"1. Cupom-modelo"</strong>, selecione um arquivo de cupom já existente e correto (geralmente com os mesmos produtos/itens do cupom que você quer recriar — normalmente um reenvio da mesma venda).</li>
+        <li>Cole no campo <strong>"2. Cole aqui o XML do novo cupom"</strong> o XML completo que você pegou no tramitador (Ctrl+C / Ctrl+V).</li>
+        <li>Se este cupom estiver substituindo manualmente um registro anterior, escolha <strong>"35CANCELAMENTO SUBSTITUICAO"</strong> na "Linha especial" (por padrão a página mantém o que já existia no modelo).</li>
+        <li>Clique em <strong>"Gerar prévia"</strong>. A página mostra o número/chave antigos e os novos, quantas linhas de item tiveram o número do cupom trocado (deve bater com a quantidade de itens do cupom), avisos — <strong>não ignore avisos</strong> — e a prévia completa do arquivo final.</li>
+        <li>Clique em <strong>"Baixar arquivo"</strong>. Em navegadores baseados em Chromium (Chrome, Edge) abre a caixa "Salvar como" com o nome já sugerido no padrão certo; em outros navegadores, o arquivo vai direto para a pasta Downloads.</li>
+      </ol>
+      <p><strong>Importante:</strong> a página assume que o cupom-modelo tem os <em>mesmos itens</em> do cupom que está sendo recriado (mesmo CNPJ, mesmo PDV, mesmos produtos). Se o novo cupom tiver produtos/itens diferentes do modelo, ela avisa que não achou o número antigo nas linhas de item e <strong>não gera automaticamente os itens novos</strong> — nesse caso a recriação continua manual.</p>
+
+      <table>
+        <caption style="caption-side:top; text-align:left; font-weight:600; margin-bottom:8px;">O que é trocado e o que NÃO é mexido</caption>
+        <thead><tr><th>Campo</th><th>O que acontece</th></tr></thead>
+        <tbody>
+          <tr><td>Chave de acesso (44 dígitos), linha <code>51NFCE...</code></td><td>trocada por inteiro, tirada do XML novo</td></tr>
+          <tr><td>Número do cupom (6 dígitos), linhas <code>02AV...</code> (uma por item)</td><td>trocado, tirado de <code>SEQ. CNC:</code> no XML novo</td></tr>
+          <tr><td>Linha <code>35CANCELAMENTO SUBSTITUICAO</code></td><td>incluída/removida conforme a opção escolhida na tela</td></tr>
+          <tr><td>Linha de horário do PDV (registro <code>00...</code>)</td><td>copiada do modelo, sem alteração — é um campo de auditoria interna que não existe em nenhum lugar do XML</td></tr>
+          <tr><td>Linha de pagamento, <code>0700000000000</code>, <code>FIM</code></td><td>copiadas do modelo, sem alteração</td></tr>
+          <tr><td>XML anexado no final</td><td>substituído por inteiro pelo XML que você colou</td></tr>
+        </tbody>
+      </table>
+    </details>
+
+    <details class="help">
+      <summary>Ajuda — Como usar "Gerar cupom completo"</summary>
+      <ol>
+        <li>Cole no campo o <strong>XML completo da NFC-e</strong> (o mesmo que se pega no tramitador).</li>
+        <li>Marque a "Linha especial" só se este cupom estiver substituindo manualmente um registro anterior (é uma decisão do processo, não vem do XML — por padrão fica "Nenhuma").</li>
+        <li>Clique em <strong>"Gerar prévia"</strong> e confira o resumo e os avisos.</li>
+        <li>Se aparecer um aviso pedindo o <strong>"Código forma pagto"</strong> (acontece quando a página ainda não conhece o código de forma de pagamento cadastrado nesta loja — ele não vem do XML, é um cadastro interno de cada loja), preencha "Código forma pagto" e "Descrição" com o valor certo e clique em "Gerar prévia" de novo. <strong>A página memoriza esse código neste navegador</strong> — da próxima vez que aparecer essa loja + essa forma de pagamento, ela já usa sozinha, sem precisar digitar de novo. Um código zerado (<code>0000</code>) pode fazer o sistema que recebe o cupom dar erro de "forma de pagamento não vinculada".</li>
+        <li>Clique em <strong>"Baixar arquivo"</strong> — o nome já vem sugerido certo.</li>
+      </ol>
+      <p>
+        <strong>Sobre a memória de forma de pagamento:</strong> ao contrário do programa desktop
+        (que grava um arquivo ao lado do <code>.exe</code>, podendo ser copiado de um PC pro
+        outro), esta página guarda os códigos aprendidos só no navegador onde você usou —
+        cada computador/navegador aprende por conta própria.
+      </p>
+    </details>
+
+    <details class="help">
+      <summary>Precisão e limitações conhecidas</summary>
+      <p>Comparando o cupom gerado contra cupons reais completos, campo a campo:</p>
+      <ul>
+        <li><strong>Registro 51 (chave/PDV) e 00 (cabeçalho da venda):</strong> praticamente 100% idênticos ao original (valor total, troco, data/hora, operador, CNPJ da loja — tudo tirado do XML).</li>
+        <li><strong>Registro 02 (itens):</strong> ~97% idêntico em pagamento à vista; os campos que não existem em lugar nenhum do XML (departamento/categoria/subcategoria/segmento do cadastro de produtos, "registrador" fiscal por alíquota, contador "CCF do Cupom Fiscal", percentuais de IBPT) usam uma aproximação fixa e sempre geram um aviso.</li>
+        <li><strong>Registro 01 (pagamento):</strong> os campos fiscais principais (forma de pagamento, descrição, valor, data) batem certinho. Para cartão/PIX/carteira digital, os dados do terminal (NSU, bandeira, código de autorização) que só existem no sistema de TEF do PDV ficam em branco.</li>
+      </ul>
+      <p>Sempre revise a prévia e os avisos antes de usar um cupom gerado — principalmente se a venda usou cartão/TEF ou teve alíquota de ICMS reduzida.</p>
+    </details>
+  </section>
+</main>
+
+<p class="footnote">Roda 100% no seu navegador — nenhum XML ou cupom é enviado a servidor algum. · <a href="../">← Voltar ao FrontCore</a></p>
+
+<script type="module" src="js/app.js"></script>

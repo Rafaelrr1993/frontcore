@@ -1,0 +1,319 @@
+/* Página do Criador de Cupons — usa os tokens de assets/theme.css. */
+
+body { font-family: var(--font-body); }
+
+a.back {
+  color: var(--on-primary);
+  opacity: 0.85;
+  text-decoration: none;
+  font-size: 13px;
+}
+a.back:hover { opacity: 1; text-decoration: underline; }
+
+header.topbar {
+  background: var(--primary);
+  color: var(--on-primary);
+  padding: var(--space-m) var(--space-l);
+}
+
+.topbar-inner {
+  max-width: 980px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-s) var(--space-l);
+}
+
+.topbar-inner h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+}
+
+.topbar-inner .subtitle {
+  font-size: 13px;
+  color: var(--primary-container);
+}
+
+main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-l) var(--space-xxl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.intro { display: flex; flex-direction: column; gap: var(--space-m); }
+
+.intro h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--on-surface);
+}
+
+.intro p { margin: 0; line-height: 1.6; color: var(--on-surface-variant); max-width: 68ch; }
+
+.mode-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-m);
+}
+
+.mode-card {
+  background: var(--surface-container-low);
+  border: 1px solid var(--outline-variant);
+  border-radius: 12px;
+  padding: var(--space-l);
+}
+
+.mode-card h3 {
+  margin: 0 0 var(--space-xs);
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--primary);
+}
+
+.mode-card p { margin: 0; font-size: 13px; line-height: 1.55; color: var(--on-surface-variant); }
+
+/* ---- abas ---- */
+
+.tabs { display: flex; flex-direction: column; gap: 0; }
+
+.tab-list {
+  display: flex;
+  gap: 2px;
+  border-bottom: 1px solid var(--outline-variant);
+}
+
+.tab-btn {
+  appearance: none;
+  border: none;
+  background: var(--surface-container);
+  color: var(--on-surface-variant);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  padding: var(--space-m) var(--space-l);
+  border-radius: 10px 10px 0 0;
+  cursor: pointer;
+}
+
+.tab-btn[aria-selected="true"] {
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+}
+
+.tab-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+
+.tab-panel {
+  padding-top: var(--space-l);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-l);
+}
+
+.tab-panel[hidden] { display: none; }
+
+/* ---- "cards" numerados (equivalentes ao LabelFrame do app desktop) ---- */
+
+fieldset.step {
+  border: 1px solid var(--outline-variant);
+  border-radius: 12px;
+  background: var(--surface-container-low);
+  padding: var(--space-l);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+}
+
+fieldset.step legend {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--on-surface);
+  padding: 0 var(--space-xs);
+}
+
+.field-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-s) var(--space-m);
+}
+
+.field-row label {
+  font-size: 13px;
+  color: var(--on-surface-variant);
+  white-space: nowrap;
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--on-surface-variant);
+  opacity: 0.85;
+}
+
+input[type="text"], input[type="number"], select, textarea {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--on-surface);
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: 8px;
+  padding: var(--space-s) var(--space-m);
+}
+
+input[type="text"]:focus, input[type="number"]:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 25%, transparent);
+}
+
+textarea.mono, .preview, .summary {
+  font-family: "Consolas", "SFMono-Regular", Menlo, monospace;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+textarea.xml-input {
+  width: 100%;
+  min-height: 160px;
+  resize: vertical;
+  white-space: pre;
+}
+
+.file-row { display: flex; gap: var(--space-m); align-items: center; flex-wrap: wrap; }
+
+.file-row input[type="text"] { flex: 1; min-width: 200px; }
+
+/* ---- botões em pílula (mesma forma "Cheio" do guia / RoundedButton) ---- */
+
+.btn {
+  appearance: none;
+  border: none;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 13px;
+  padding: var(--space-s) var(--space-l);
+  cursor: pointer;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.btn-primary { background: var(--primary); color: var(--on-primary); }
+.btn-primary:hover:not(:disabled) { background: var(--on-primary-container); }
+
+.btn-secondary { background: var(--secondary-container); color: var(--on-secondary-container); }
+.btn-secondary:hover:not(:disabled) { background: var(--surface-container-high); }
+
+.actions { display: flex; gap: var(--space-m); flex-wrap: wrap; }
+
+/* ---- resumo / avisos / prévia ---- */
+
+.summary {
+  background: var(--surface-container-low);
+  border: 1px solid var(--outline-variant);
+  border-radius: 12px;
+  padding: var(--space-m) var(--space-l);
+  white-space: pre-wrap;
+  color: var(--on-surface);
+}
+.summary:empty { display: none; }
+
+.warnings {
+  background: var(--tertiary-container);
+  color: var(--on-tertiary-container);
+  border-radius: 12px;
+  padding: var(--space-m) var(--space-l);
+  font-size: 13px;
+  line-height: 1.55;
+}
+.warnings[hidden] { display: none; }
+.warnings ul { margin: var(--space-xs) 0 0; padding-left: 1.2em; }
+.warnings .warnings-title { font-weight: 700; }
+
+.error-banner {
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+  border-left: 4px solid var(--primary);
+  border-radius: 8px;
+  padding: var(--space-m) var(--space-l);
+  font-size: 13px;
+}
+.error-banner[hidden] { display: none; }
+
+.preview-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--outline-variant);
+  border-radius: 12px;
+  background: var(--surface-container-lowest);
+}
+
+.preview {
+  display: block;
+  width: max-content;
+  min-width: 100%;
+  margin: 0;
+  padding: var(--space-m) var(--space-l);
+  white-space: pre;
+  color: var(--on-surface);
+}
+.preview:empty::before {
+  content: "A prévia aparece aqui depois de clicar em \201CGerar prévia\201D.";
+  color: var(--outline);
+  font-style: italic;
+  font-family: var(--font-body);
+}
+
+/* ---- ajuda ---- */
+
+details.help {
+  border: 1px solid var(--outline-variant);
+  border-radius: 12px;
+  background: var(--surface-container-low);
+  padding: var(--space-m) var(--space-l);
+}
+
+details.help + details.help { margin-top: var(--space-m); }
+
+details.help summary {
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--on-surface);
+}
+
+details.help[open] summary { margin-bottom: var(--space-m); }
+
+details.help ol, details.help ul { margin: var(--space-s) 0; padding-left: 1.3em; line-height: 1.6; }
+details.help p { line-height: 1.6; margin: var(--space-s) 0; }
+details.help table { border-collapse: collapse; width: 100%; font-size: 13px; }
+details.help th, details.help td {
+  border: 1px solid var(--outline-variant);
+  padding: var(--space-xs) var(--space-s);
+  text-align: left;
+  vertical-align: top;
+}
+details.help th { background: var(--surface-container); }
+
+.footnote {
+  font-size: 12px;
+  color: var(--outline);
+  text-align: center;
+  padding: 0 0 var(--space-xxl);
+}
+
+.footnote a { color: var(--outline); }
+
+@media (max-width: 640px) {
+  .field-row { align-items: flex-start; flex-direction: column; }
+}

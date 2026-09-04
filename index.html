@@ -1,129 +1,21 @@
+<meta charset="utf-8">
 <title>FrontCore</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/theme.css">
 <style>
-  /* ---------------------------------------------------------------------
-     Tokens — copiados de CriadorDeCupons/avanco_theme.py (Avanço Style
-     Guide, Frontify, 04/09/2025). Light = valores literais do guia.
-     Dark = extensão tonal M3 dos mesmos matizes (o guia não define modo
-     escuro; aqui a hierarquia primária/terciária/superfícies segue a
-     mesma lógica de "surface containers" da seção 1.2, invertida).
-     --------------------------------------------------------------------- */
-  :root {
-    --primary: #0005AA;
-    --on-primary: #FFFFFF;
-    --primary-container: #E0E0FF;
-    --on-primary-container: #00026C;
-
-    --secondary: #5C5D72;
-    --on-secondary: #FFFFFF;
-    --secondary-container: #E1E0F9;
-    --on-secondary-container: #191A2C;
-
-    --tertiary: #566500;
-    --on-tertiary: #FFFFFF;
-    --tertiary-container: #D7EE69;
-    --on-tertiary-container: #181E00;
-
-    --surface: #FCF8FD;
-    --surface-container-lowest: #FFFFFF;
-    --surface-container-low: #F6F2F7;
-    --surface-container: #F0EDF1;
-    --surface-container-high: #EAE7EC;
-
-    --on-surface: #1B1B1F;
-    --on-surface-variant: #46464F;
-    --outline: #777680;
-    --outline-variant: #C7C5D0;
-
-    --font-display: "Titillium Web", "Segoe UI", system-ui, sans-serif;
-    --font-body: "Open Sans", "Segoe UI", system-ui, sans-serif;
-
-    --space-xs: 4px;
-    --space-s: 8px;
-    --space-m: 12px;
-    --space-l: 16px;
-    --space-xl: 24px;
-    --space-xxl: 32px;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --primary: #BAC3FF;
-      --on-primary: #131A8E;
-      --primary-container: #262DC4;
-      --on-primary-container: #E0E0FF;
-
-      --secondary: #C5C4DD;
-      --on-secondary: #2E2F42;
-      --secondary-container: #444559;
-      --on-secondary-container: #E1E0F9;
-
-      --tertiary: #BCCE55;
-      --on-tertiary: #2C3600;
-      --tertiary-container: #404C00;
-      --on-tertiary-container: #D7EE69;
-
-      --surface: #121215;
-      --surface-container-lowest: #0C0C0E;
-      --surface-container-low: #1B1B1F;
-      --surface-container: #202024;
-      --surface-container-high: #2A2A2F;
-
-      --on-surface: #E5E1E6;
-      --on-surface-variant: #C7C5D0;
-      --outline: #91909A;
-      --outline-variant: #46464F;
-    }
-  }
-
-  :root[data-theme="dark"] {
-    --primary: #BAC3FF;
-    --on-primary: #131A8E;
-    --primary-container: #262DC4;
-    --on-primary-container: #E0E0FF;
-
-    --secondary: #C5C4DD;
-    --on-secondary: #2E2F42;
-    --secondary-container: #444559;
-    --on-secondary-container: #E1E0F9;
-
-    --tertiary: #BCCE55;
-    --on-tertiary: #2C3600;
-    --tertiary-container: #404C00;
-    --on-tertiary-container: #D7EE69;
-
-    --surface: #121215;
-    --surface-container-lowest: #0C0C0E;
-    --surface-container-low: #1B1B1F;
-    --surface-container: #202024;
-    --surface-container-high: #2A2A2F;
-
-    --on-surface: #E5E1E6;
-    --on-surface-variant: #C7C5D0;
-    --outline: #91909A;
-    --outline-variant: #46464F;
-  }
-
-  * { box-sizing: border-box; }
-
   body {
-    background: var(--surface);
-    color: var(--on-surface);
-    font-family: var(--font-body);
-    min-height: 100dvh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     position: relative;
     overflow-x: hidden;
   }
 
-  /* textura de fundo: grade de pontos sutil + halo tonal, ambos discretos */
+  /* textura de fundo: grade de pontos sutil + halo tonal, ambos discretos —
+     cobrem só a área do hero (600px), não a página inteira */
   .field {
-    position: fixed;
+    position: absolute;
     inset: 0;
+    height: 600px;
     z-index: 0;
     pointer-events: none;
     background-image:
@@ -135,15 +27,16 @@
   }
 
   .halo {
-    position: fixed;
+    position: absolute;
     inset: 0;
+    height: 600px;
     z-index: 0;
     pointer-events: none;
     background: radial-gradient(ellipse 60% 42% at 50% 30%, var(--primary-container) 0%, transparent 68%);
     opacity: 0.55;
   }
 
-  main {
+  .hero {
     position: relative;
     z-index: 1;
     display: flex;
@@ -151,8 +44,9 @@
     align-items: center;
     text-align: center;
     gap: var(--space-l);
-    padding: var(--space-xxl) var(--space-l);
+    padding: var(--space-xxl) var(--space-l) var(--space-xl);
     max-width: 640px;
+    margin: 0 auto;
   }
 
   .eyebrow {
@@ -243,16 +137,101 @@
     font-variant-numeric: tabular-nums;
   }
 
+  .programs {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: var(--space-xl) var(--space-l) var(--space-xxl);
+  }
+
+  .programs h2 {
+    margin: 0 0 var(--space-m);
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--on-surface-variant);
+    text-align: center;
+  }
+
+  .program-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--space-m);
+  }
+
+  .program-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xs);
+    padding: var(--space-l);
+    border-radius: 16px;
+    background: var(--surface-container-low);
+    border: 1px solid var(--outline-variant);
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  }
+
+  .program-card:hover,
+  .program-card:focus-visible {
+    background: var(--surface-container);
+    border-color: var(--primary);
+    transform: translateY(-1px);
+  }
+
+  .program-card:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  .program-card .badge {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--on-tertiary-container);
+    background: var(--tertiary-container);
+    padding: 2px var(--space-s);
+    border-radius: 999px;
+  }
+
+  .program-card h3 {
+    margin: var(--space-xs) 0 0;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--primary);
+  }
+
+  .program-card p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--on-surface-variant);
+  }
+
+  .program-card .go {
+    margin-top: var(--space-s);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .program-card { transition: none; }
+  }
+
   footer {
-    position: fixed;
-    bottom: var(--space-xl);
-    left: 50%;
-    transform: translateX(-50%);
+    position: relative;
     z-index: 1;
     font-size: 12px;
     color: var(--outline);
     text-align: center;
-    padding: 0 var(--space-l);
+    padding: 0 var(--space-l) var(--space-xxl);
   }
 
   @keyframes rise {
@@ -275,7 +254,7 @@
 <div class="field"></div>
 <div class="halo"></div>
 
-<main>
+<div class="hero">
   <span class="eyebrow">Avanço · Plataforma</span>
   <h1>FrontCore</h1>
   <span class="rule"></span>
@@ -289,9 +268,21 @@
     <span class="sep"></span>
     <span class="clock" id="clock">--:--:--</span>
     <span class="sep"></span>
-    <span>v0.1 · exercício 1</span>
+    <span>v0.2 · exercício 2</span>
   </div>
-</main>
+</div>
+
+<section class="programs">
+  <h2>Programas</h2>
+  <div class="program-grid">
+    <a class="program-card" href="criador-de-cupons/">
+      <span class="badge">Disponível</span>
+      <h3>Criador de Cupons</h3>
+      <p>Recria e gera cupons fiscais (NFC-e) a partir do XML — direto no navegador, sem instalar nada.</p>
+      <span class="go">Abrir →</span>
+    </a>
+  </div>
+</section>
 
 <footer>Acesse este mesmo endereço de qualquer computador, em qualquer lugar, para visualizar esta página.</footer>
 
