@@ -1,0 +1,310 @@
+<title>FrontCore</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ---------------------------------------------------------------------
+     Tokens — copiados de CriadorDeCupons/avanco_theme.py (Avanço Style
+     Guide, Frontify, 04/09/2025). Light = valores literais do guia.
+     Dark = extensão tonal M3 dos mesmos matizes (o guia não define modo
+     escuro; aqui a hierarquia primária/terciária/superfícies segue a
+     mesma lógica de "surface containers" da seção 1.2, invertida).
+     --------------------------------------------------------------------- */
+  :root {
+    --primary: #0005AA;
+    --on-primary: #FFFFFF;
+    --primary-container: #E0E0FF;
+    --on-primary-container: #00026C;
+
+    --secondary: #5C5D72;
+    --on-secondary: #FFFFFF;
+    --secondary-container: #E1E0F9;
+    --on-secondary-container: #191A2C;
+
+    --tertiary: #566500;
+    --on-tertiary: #FFFFFF;
+    --tertiary-container: #D7EE69;
+    --on-tertiary-container: #181E00;
+
+    --surface: #FCF8FD;
+    --surface-container-lowest: #FFFFFF;
+    --surface-container-low: #F6F2F7;
+    --surface-container: #F0EDF1;
+    --surface-container-high: #EAE7EC;
+
+    --on-surface: #1B1B1F;
+    --on-surface-variant: #46464F;
+    --outline: #777680;
+    --outline-variant: #C7C5D0;
+
+    --font-display: "Titillium Web", "Segoe UI", system-ui, sans-serif;
+    --font-body: "Open Sans", "Segoe UI", system-ui, sans-serif;
+
+    --space-xs: 4px;
+    --space-s: 8px;
+    --space-m: 12px;
+    --space-l: 16px;
+    --space-xl: 24px;
+    --space-xxl: 32px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --primary: #BAC3FF;
+      --on-primary: #131A8E;
+      --primary-container: #262DC4;
+      --on-primary-container: #E0E0FF;
+
+      --secondary: #C5C4DD;
+      --on-secondary: #2E2F42;
+      --secondary-container: #444559;
+      --on-secondary-container: #E1E0F9;
+
+      --tertiary: #BCCE55;
+      --on-tertiary: #2C3600;
+      --tertiary-container: #404C00;
+      --on-tertiary-container: #D7EE69;
+
+      --surface: #121215;
+      --surface-container-lowest: #0C0C0E;
+      --surface-container-low: #1B1B1F;
+      --surface-container: #202024;
+      --surface-container-high: #2A2A2F;
+
+      --on-surface: #E5E1E6;
+      --on-surface-variant: #C7C5D0;
+      --outline: #91909A;
+      --outline-variant: #46464F;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --primary: #BAC3FF;
+    --on-primary: #131A8E;
+    --primary-container: #262DC4;
+    --on-primary-container: #E0E0FF;
+
+    --secondary: #C5C4DD;
+    --on-secondary: #2E2F42;
+    --secondary-container: #444559;
+    --on-secondary-container: #E1E0F9;
+
+    --tertiary: #BCCE55;
+    --on-tertiary: #2C3600;
+    --tertiary-container: #404C00;
+    --on-tertiary-container: #D7EE69;
+
+    --surface: #121215;
+    --surface-container-lowest: #0C0C0E;
+    --surface-container-low: #1B1B1F;
+    --surface-container: #202024;
+    --surface-container-high: #2A2A2F;
+
+    --on-surface: #E5E1E6;
+    --on-surface-variant: #C7C5D0;
+    --outline: #91909A;
+    --outline-variant: #46464F;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--surface);
+    color: var(--on-surface);
+    font-family: var(--font-body);
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* textura de fundo: grade de pontos sutil + halo tonal, ambos discretos */
+  .field {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(circle at 1px 1px, var(--outline-variant) 1px, transparent 0);
+    background-size: 28px 28px;
+    opacity: 0.35;
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 38%, #000 0%, transparent 72%);
+            mask-image: radial-gradient(ellipse 70% 60% at 50% 38%, #000 0%, transparent 72%);
+  }
+
+  .halo {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse 60% 42% at 50% 30%, var(--primary-container) 0%, transparent 68%);
+    opacity: 0.55;
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-l);
+    padding: var(--space-xxl) var(--space-l);
+    max-width: 640px;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-s);
+    padding: var(--space-xs) var(--space-l);
+    border-radius: 999px;
+    background: var(--secondary-container);
+    color: var(--on-secondary-container);
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    animation: rise 0.5s ease-out both;
+  }
+
+  h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(48px, 10vw, 96px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--primary);
+    text-wrap: balance;
+    animation: rise 0.6s ease-out both;
+    animation-delay: 0.05s;
+  }
+
+  .rule {
+    width: 56px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--tertiary-container);
+    animation: rise 0.6s ease-out both;
+    animation-delay: 0.1s;
+  }
+
+  .tagline {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--on-surface-variant);
+    max-width: 46ch;
+    animation: rise 0.6s ease-out both;
+    animation-delay: 0.15s;
+  }
+
+  .status {
+    display: flex;
+    align-items: center;
+    gap: var(--space-m);
+    margin-top: var(--space-m);
+    padding: var(--space-s) var(--space-l);
+    border-radius: 999px;
+    background: var(--surface-container-low);
+    border: 1px solid var(--outline-variant);
+    font-size: 12px;
+    color: var(--on-surface-variant);
+    animation: rise 0.6s ease-out both;
+    animation-delay: 0.2s;
+  }
+
+  .status .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--tertiary);
+    flex-shrink: 0;
+    animation: pulse 2.2s ease-in-out infinite;
+  }
+
+  .status b {
+    color: var(--on-surface);
+    font-weight: 600;
+  }
+
+  .status .sep {
+    width: 1px;
+    height: 12px;
+    background: var(--outline-variant);
+  }
+
+  .clock {
+    font-variant-numeric: tabular-nums;
+  }
+
+  footer {
+    position: fixed;
+    bottom: var(--space-xl);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    font-size: 12px;
+    color: var(--outline);
+    text-align: center;
+    padding: 0 var(--space-l);
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--tertiary) 45%, transparent); }
+    50% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--tertiary) 0%, transparent); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .eyebrow, h1, .rule, .tagline, .status, .status .dot {
+      animation: none;
+    }
+  }
+</style>
+
+<div class="field"></div>
+<div class="halo"></div>
+
+<main>
+  <span class="eyebrow">Avanço · Plataforma</span>
+  <h1>FrontCore</h1>
+  <span class="rule"></span>
+  <p class="tagline">
+    Núcleo web dos programas Avanço — a base sobre a qual as próximas
+    ferramentas vão rodar e conversar com as máquinas locais.
+  </p>
+  <div class="status">
+    <span class="dot"></span>
+    <span><b>Sistema on-line</b></span>
+    <span class="sep"></span>
+    <span class="clock" id="clock">--:--:--</span>
+    <span class="sep"></span>
+    <span>v0.1 · exercício 1</span>
+  </div>
+</main>
+
+<footer>Acesse este mesmo endereço de qualquer computador da rede para visualizar esta página.</footer>
+
+<script>
+  function tick() {
+    var el = document.getElementById('clock');
+    if (!el) return;
+    var now = new Date();
+    var hh = String(now.getHours()).padStart(2, '0');
+    var mm = String(now.getMinutes()).padStart(2, '0');
+    var ss = String(now.getSeconds()).padStart(2, '0');
+    el.textContent = hh + ':' + mm + ':' + ss;
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>
