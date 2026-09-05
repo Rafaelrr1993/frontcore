@@ -1,11 +1,12 @@
 // -----------------------------------------------------------------------
 // xml-lite.js — leitor de XML mínimo, sem dependências, usado no lugar do
-// xml.etree.ElementTree do Python. Só precisa do que o cupom_generator usa:
-// navegar filho-a-filho por nome de tag (ignorando namespace, exatamente
-// como _strip_ns/_local_find no lado Python) e ler o texto de elementos
-// "folha" (sem filhos). Não é um parser XML completo (não lida com DTD,
-// processing instructions incomuns, etc.) — mas cobre com folga o XML da
-// NFC-e, que é sempre bem formado e sem essas complicações.
+// xml.etree.ElementTree do Python nas ferramentas do FrontCore. Cobre o
+// que os programas usam: navegar filho-a-filho por nome de tag (ignorando
+// namespace, como _strip_ns/_local_find no lado Python), buscar um
+// elemento em qualquer profundidade (equivalente ao ".//tag" do
+// ElementTree) e ler o texto de elementos "folha". Não é um parser XML
+// completo (sem DTD, processing instructions incomuns etc.) — mas cobre
+// com folga o XML da NFe/NFC-e, que é sempre bem formado.
 // -----------------------------------------------------------------------
 
 function stripNs(tag) {
@@ -149,6 +150,7 @@ export function parseXML(xmlText) {
  * "a/b/c", ignorando namespace, devolvendo TODOS os elementos que baterem
  * em cada nível (igual ao ElementTree usado no lado Python). */
 export function localFindAll(elem, path) {
+  if (!elem) return [];
   const parts = path.split("/");
   let current = [elem];
   for (const part of parts) {
@@ -172,4 +174,17 @@ export function xtext(elem, path, dflt = "") {
   const e = localFind(elem, path);
   if (e && e.text && e.text.trim()) return e.text.trim();
   return dflt;
+}
+
+/** Equivalente a ElementTree.find(".//tag"): procura o primeiro elemento
+ * com essa tag em QUALQUER profundidade abaixo de `elem` (não inclui o
+ * próprio `elem`), em ordem de documento (pré-ordem). */
+export function descendant(elem, tag) {
+  if (!elem) return null;
+  for (const child of elem.children) {
+    if (child.tag === tag) return child;
+    const found = descendant(child, tag);
+    if (found) return found;
+  }
+  return null;
 }

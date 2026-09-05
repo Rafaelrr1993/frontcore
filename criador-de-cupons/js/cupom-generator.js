@@ -14,7 +14,7 @@
 // escondidos, porque são exatamente os pontos que precisam de conferência
 // manual.
 // -----------------------------------------------------------------------
-import { parseXML, localFind, localFindAll, xtext } from "./xml-lite.js";
+import { parseXML, localFind, localFindAll, xtext } from "../../assets/js/xml-lite.js";
 import { normalizeXmlLayout } from "./cupom-builder.js";
 
 // ---------------------------------------------------------------------
