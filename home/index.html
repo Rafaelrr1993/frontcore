@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FrontCore</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+<link rel="stylesheet" href="../assets/help-widget.css">
+<style>
+  body {
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* textura de fundo: grade de pontos sutil + halo tonal, ambos discretos —
+     cobrem só a área do hero (600px), não a página inteira */
+  .field {
+    position: absolute;
+    inset: 0;
+    height: 600px;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(circle at 1px 1px, var(--outline-variant) 1px, transparent 0);
+    background-size: 28px 28px;
+    opacity: 0.35;
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 38%, #000 0%, transparent 72%);
+            mask-image: radial-gradient(ellipse 70% 60% at 50% 38%, #000 0%, transparent 72%);
+  }
+
+  .halo {
+    position: absolute;
+    inset: 0;
+    height: 600px;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse 60% 42% at 50% 30%, var(--primary-container) 0%, transparent 68%);
+    opacity: 0.55;
+  }
+
+  .hero {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-l);
+    padding: var(--space-xxl) var(--space-l) var(--space-xl);
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .login-link {
+    position: fixed;
+    top: var(--space-l);
+    right: var(--space-l);
+    z-index: 2;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--on-surface-variant);
+    text-decoration: none;
+    padding: var(--space-xs) var(--space-m);
+    border-radius: 999px;
+    border: 1px solid var(--outline-variant);
+    background: var(--surface-container-low);
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .login-link:hover, .login-link:focus-visible {
+    color: var(--primary);
+    border-color: var(--primary);
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-s);
+    padding: var(--space-xs) var(--space-l);
+    border-radius: 999px;
+    background: var(--secondary-container);
+    color: var(--on-secondary-container);
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    animation: rise 0.5s ease-out both;
+  }
+
+  h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(48px, 10vw, 96px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--primary);
+    text-wrap: balance;
+    animation: rise 0.6s ease-out both;
+    animation-delay: 0.05s;
+  }
+
+  .rule {
+    width: 56px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--tertiary-container);
+    animation: rise 0.6s ease-out both;
+    animation-delay: 0.1s;
+  }
+
+  .tagline {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--on-surface-variant);
+    max-width: 46ch;
+    animation: rise 0.6s ease-out both;
+    animation-delay: 0.15s;
+  }
+
+  .status {
+    display: flex;
+    align-items: center;
+    gap: var(--space-m);
+    margin-top: var(--space-m);
+    padding: var(--space-s) var(--space-l);
+    border-radius: 999px;
+    background: var(--surface-container-low);
+    border: 1px solid var(--outline-variant);
+    font-size: 12px;
+    color: var(--on-surface-variant);
+    animation: rise 0.6s ease-out both;
+    animation-delay: 0.2s;
+  }
+
+  .status .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--tertiary);
+    flex-shrink: 0;
+    animation: pulse 2.2s ease-in-out infinite;
+  }
+
+  .status b {
+    color: var(--on-surface);
+    font-weight: 600;
+  }
+
+  .status .sep {
+    width: 1px;
+    height: 12px;
+    background: var(--outline-variant);
+  }
+
+  .clock {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .programs {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: var(--space-xl) var(--space-l) var(--space-xxl);
+  }
+
+  .programs h2 {
+    margin: 0 0 var(--space-m);
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--on-surface-variant);
+    text-align: center;
+  }
+
+  .program-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--space-m);
+  }
+
+  .program-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xs);
+    padding: var(--space-l);
+    border-radius: 16px;
+    background: var(--surface-container-low);
+    border: 1px solid var(--outline-variant);
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  .program-card:hover,
+  .program-card:focus-visible {
+    background: var(--surface-container);
+    border-color: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent), 0 10px 24px rgba(0, 0, 0, 0.16);
+  }
+
+  .program-card:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  .program-card .badge {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--on-tertiary-container);
+    background: var(--tertiary-container);
+    padding: 2px var(--space-s);
+    border-radius: 999px;
+  }
+
+  .program-card .badge.badge-soon {
+    color: var(--on-secondary-container);
+    background: var(--secondary-container);
+  }
+
+  .program-card h3 {
+    margin: var(--space-xs) 0 0;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--primary);
+  }
+
+  .program-card p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--on-surface-variant);
+  }
+
+  .program-card .go {
+    margin-top: var(--space-s);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .program-card { transition: none; }
+  }
+
+  footer {
+    position: relative;
+    z-index: 1;
+    font-size: 12px;
+    color: var(--outline);
+    text-align: center;
+    padding: 0 var(--space-l) var(--space-xxl);
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--tertiary) 45%, transparent); }
+    50% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--tertiary) 0%, transparent); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .eyebrow, h1, .rule, .tagline, .status, .status .dot {
+      animation: none;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="field"></div>
+<div class="halo"></div>
+
+<a class="login-link" href="../">Sair</a>
+
+<div class="hero">
+  <span class="eyebrow">Avanço · Plataforma</span>
+  <h1>FrontCore</h1>
+  <span class="rule"></span>
+  <p class="tagline">
+    Núcleo web dos programas Avanço — a base sobre a qual as próximas
+    ferramentas vão rodar e conversar com as máquinas locais.
+  </p>
+  <div class="status">
+    <span class="dot"></span>
+    <span><b>Sistema on-line</b></span>
+    <span class="sep"></span>
+    <span class="clock" id="clock">--:--:--</span>
+    <span class="sep"></span>
+    <span>v0.7 · exercício 7</span>
+  </div>
+</div>
+
+<section class="programs">
+  <h2>Programas</h2>
+  <div class="program-grid">
+    <a class="program-card" href="../criador-de-cupons/">
+      <span class="badge">Disponível</span>
+      <h3>Criador de Cupons</h3>
+      <p>Recria e gera cupons fiscais (NFC-e) a partir do XML — direto no navegador, sem instalar nada.</p>
+      <span class="go">Abrir →</span>
+    </a>
+    <a class="program-card" href="../consulta-ambiente/">
+      <span class="badge">Disponível</span>
+      <h3>Consulta Ambiente</h3>
+      <p>Digite um CNPJ e veja em qual ambiente o cliente está cadastrado, com o número da loja e o código da filial.</p>
+      <span class="go">Abrir →</span>
+    </a>
+    <a class="program-card" href="../xml-para-csv/">
+      <span class="badge">Disponível</span>
+      <h3>XML para CSV</h3>
+      <p>Converte XMLs de NF-e/NFC-e (soltos, em pasta ou num .zip) numa planilha CSV pronta pra abrir no Excel.</p>
+      <span class="go">Abrir →</span>
+    </a>
+    <a class="program-card" href="../confere-diferenca/">
+      <span class="badge badge-soon">Em construção</span>
+      <h3>Confere Diferença</h3>
+      <p>Compara a planilha do ERP Integral com a do tramitador e acha direto quais cupons/notas não batem entre os dois.</p>
+      <span class="go">Abrir →</span>
+    </a>
+    <a class="program-card" href="../painel-ana/">
+      <span class="badge badge-soon">Em breve</span>
+      <h3>Painel ANA</h3>
+      <p>Gerenciador de pendências ANA — depende de uma ponte segura entre a nuvem e a rede de cada loja antes de ficar disponível aqui.</p>
+      <span class="go">Abrir →</span>
+    </a>
+    <a class="program-card" href="../replicador-pdv/">
+      <span class="badge badge-soon">Em breve</span>
+      <h3>Replicador de PDV</h3>
+      <p>Réplica configurações/dados entre terminais de PDV.</p>
+      <span class="go">Abrir →</span>
+    </a>
+  </div>
+</section>
+
+<section class="programs">
+  <h2>Recursos</h2>
+  <div class="program-grid">
+    <a class="program-card" href="../downloads/">
+      <span class="badge">Disponível</span>
+      <h3>Downloads</h3>
+      <p>Programas, drivers e ferramentas de suporte — balança, impressoras, pinpad, Linux e mais.</p>
+      <span class="go">Abrir →</span>
+    </a>
+  </div>
+</section>
+
+<footer>Acesse este mesmo endereço de qualquer computador, em qualquer lugar, para visualizar esta página.</footer>
+
+<script>
+  function tick() {
+    var el = document.getElementById('clock');
+    if (!el) return;
+    var now = new Date();
+    var hh = String(now.getHours()).padStart(2, '0');
+    var mm = String(now.getMinutes()).padStart(2, '0');
+    var ss = String(now.getSeconds()).padStart(2, '0');
+    el.textContent = hh + ':' + mm + ':' + ss;
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>
+<script type="module" src="../assets/js/help-widget.js"></script>
+</body>
+</html>

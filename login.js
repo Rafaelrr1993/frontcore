@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// app.js — protótipo visual de login + troca obrigatória de senha no
+// login.js — protótipo visual de login + troca obrigatória de senha no
 // primeiro acesso. NÃO é autenticação de verdade: as credenciais abaixo
 // são fictícias e ficam visíveis no código (é um site estático, sem
 // backend/banco de dados nenhum ainda). Quando existir um backend real,
