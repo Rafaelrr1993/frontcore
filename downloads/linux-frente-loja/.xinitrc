@@ -51,7 +51,7 @@ xinput map-to-output `echo $DOIS | cut -c 1-2` HDMI-1
 xinput map-to-output `echo $DOIS | cut -c 4-5` VGA-1
 
 # CARREGAR VNC, SE PRECISAR ALTERE A SENHA NA LINHA ABAIXO
-x11vnc -rfbport 5969 -nevershared -forever -passwd "TROQUE_ESTA_SENHA" -display :0 &
+x11vnc -rfbport 5969 -nevershared -forever -passwd "pdvlinux" -display :0 &
 
 # NAO APAGA TELA
 xset s off
