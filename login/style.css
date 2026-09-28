@@ -1,0 +1,130 @@
+/* Página de login — protótipo visual (sem backend real ainda). */
+
+body {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-l);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--surface-container-low);
+  border: 1px solid var(--outline-variant);
+  border-radius: 20px;
+  padding: var(--space-xxl) var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-l);
+}
+
+.auth-brand {
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 28px;
+  color: var(--primary);
+  margin: 0;
+}
+
+.auth-eyebrow {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--on-surface-variant);
+  margin: calc(-1 * var(--space-m)) 0 0;
+}
+
+.auth-view h2 {
+  margin: 0 0 var(--space-xs);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--on-surface);
+  text-align: center;
+}
+
+.auth-view p.hint {
+  margin: 0 0 var(--space-m);
+  font-size: 13px;
+  color: var(--on-surface-variant);
+  text-align: center;
+  line-height: 1.5;
+}
+
+.auth-view[hidden] { display: none; }
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-m);
+}
+
+.field-group label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+}
+
+.field-group input {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--on-surface);
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: 8px;
+  padding: var(--space-s) var(--space-m);
+}
+.field-group input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 25%, transparent);
+}
+
+.btn-primary {
+  appearance: none;
+  border: none;
+  border-radius: 999px;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 14px;
+  padding: var(--space-s) var(--space-l);
+  cursor: pointer;
+  width: 100%;
+}
+.btn-primary:hover { background: var(--on-primary-container); }
+
+.error-msg {
+  font-size: 13px;
+  color: var(--primary);
+  background: var(--secondary-container);
+  border-radius: 8px;
+  padding: var(--space-s) var(--space-m);
+  margin-bottom: var(--space-m);
+}
+.error-msg[hidden] { display: none; }
+
+.success-icon {
+  text-align: center;
+  font-size: 40px;
+}
+
+.proto-note {
+  font-size: 11px;
+  color: var(--outline);
+  text-align: center;
+  line-height: 1.5;
+}
+
+.back-home {
+  text-align: center;
+  font-size: 13px;
+}
+.back-home a { color: var(--primary); }

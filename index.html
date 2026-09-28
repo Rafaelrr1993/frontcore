@@ -54,6 +54,26 @@
     margin: 0 auto;
   }
 
+  .login-link {
+    position: fixed;
+    top: var(--space-l);
+    right: var(--space-l);
+    z-index: 2;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--on-surface-variant);
+    text-decoration: none;
+    padding: var(--space-xs) var(--space-m);
+    border-radius: 999px;
+    border: 1px solid var(--outline-variant);
+    background: var(--surface-container-low);
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .login-link:hover, .login-link:focus-visible {
+    color: var(--primary);
+    border-color: var(--primary);
+  }
+
   .eyebrow {
     display: inline-flex;
     align-items: center;
@@ -168,6 +188,7 @@
   }
 
   .program-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -178,14 +199,15 @@
     border: 1px solid var(--outline-variant);
     text-decoration: none;
     color: inherit;
-    transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+    transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
   }
 
   .program-card:hover,
   .program-card:focus-visible {
     background: var(--surface-container);
     border-color: var(--primary);
-    transform: translateY(-1px);
+    transform: translateY(-3px);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent), 0 10px 24px rgba(0, 0, 0, 0.16);
   }
 
   .program-card:focus-visible {
@@ -202,6 +224,11 @@
     background: var(--tertiary-container);
     padding: 2px var(--space-s);
     border-radius: 999px;
+  }
+
+  .program-card .badge.badge-soon {
+    color: var(--on-secondary-container);
+    background: var(--secondary-container);
   }
 
   .program-card h3 {
@@ -261,6 +288,8 @@
 <div class="field"></div>
 <div class="halo"></div>
 
+<a class="login-link" href="login/">Entrar</a>
+
 <div class="hero">
   <span class="eyebrow">Avanço · Plataforma</span>
   <h1>FrontCore</h1>
@@ -275,7 +304,7 @@
     <span class="sep"></span>
     <span class="clock" id="clock">--:--:--</span>
     <span class="sep"></span>
-    <span>v0.5 · exercício 5</span>
+    <span>v0.6 · exercício 6</span>
   </div>
 </div>
 
@@ -298,6 +327,24 @@
       <span class="badge">Disponível</span>
       <h3>XML para CSV</h3>
       <p>Converte XMLs de NF-e/NFC-e (soltos, em pasta ou num .zip) numa planilha CSV pronta pra abrir no Excel.</p>
+      <span class="go">Abrir →</span>
+    </a>
+    <a class="program-card" href="confere-diferenca/">
+      <span class="badge badge-soon">Em construção</span>
+      <h3>Confere Diferença</h3>
+      <p>Compara a planilha do ERP Integral com a do tramitador e acha direto quais cupons/notas não batem entre os dois.</p>
+      <span class="go">Abrir →</span>
+    </a>
+    <a class="program-card" href="painel-ana/">
+      <span class="badge badge-soon">Em breve</span>
+      <h3>Painel ANA</h3>
+      <p>Gerenciador de pendências ANA — depende de uma ponte segura entre a nuvem e a rede de cada loja antes de ficar disponível aqui.</p>
+      <span class="go">Abrir →</span>
+    </a>
+    <a class="program-card" href="replicador-pdv/">
+      <span class="badge badge-soon">Em breve</span>
+      <h3>Replicador de PDV</h3>
+      <p>Réplica configurações/dados entre terminais de PDV.</p>
       <span class="go">Abrir →</span>
     </a>
   </div>

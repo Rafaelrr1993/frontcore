@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Confere Diferença</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+<link rel="stylesheet" href="../assets/help-widget.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="back" href="../">← FrontCore</a>
+    <h1>Confere Diferença</h1>
+    <span class="subtitle">Compara Integral × Tramitador e acha os cupons que não batem</span>
+  </div>
+</header>
+
+<main>
+  <section class="intro">
+    <span class="status-pill">Em construção</span>
+    <p style="margin-top: var(--space-m);">
+      Hoje essa comparação é feita na mão: pega a coluna da NFC-e da
+      planilha do ERP Integral, pega a mesma coluna na planilha do
+      tramitador, e vai conferindo verdadeiro/falso pra achar qual cupom
+      ou nota está diferente entre os dois. Esta página vai fazer isso
+      automaticamente — você escolhe qual arquivo é qual (os layouts são
+      diferentes e o nome muda a cada exportação), ela cruza os dois e
+      mostra só o que não bate, incluindo os outros campos além da
+      NFC-e (valor, status, data).
+    </p>
+  </section>
+
+  <fieldset class="step">
+    <legend>1. Selecione os dois arquivos</legend>
+
+    <div class="file-slot">
+      <label for="arquivo1">Arquivo 1:</label>
+      <input type="file" id="arquivo1" accept=".csv,.xlsx,.xls" hidden>
+      <button type="button" class="btn btn-secondary" onclick="document.getElementById('arquivo1').click()">Selecionar...</button>
+      <span class="fname" id="nome1">Nenhum arquivo selecionado</span>
+      <select id="tipo1">
+        <option value="integral">É do Integral</option>
+        <option value="tramitador">É do Tramitador</option>
+      </select>
+    </div>
+
+    <div class="file-slot">
+      <label for="arquivo2">Arquivo 2:</label>
+      <input type="file" id="arquivo2" accept=".csv,.xlsx,.xls" hidden>
+      <button type="button" class="btn btn-secondary" onclick="document.getElementById('arquivo2').click()">Selecionar...</button>
+      <span class="fname" id="nome2">Nenhum arquivo selecionado</span>
+      <select id="tipo2">
+        <option value="tramitador">É do Tramitador</option>
+        <option value="integral">É do Integral</option>
+      </select>
+    </div>
+  </fieldset>
+
+  <fieldset class="step">
+    <legend>2. Comparar</legend>
+    <div class="actions">
+      <button type="button" class="btn btn-primary" id="btn-comparar">Comparar</button>
+    </div>
+    <p class="status-msg" id="status-msg" hidden></p>
+  </fieldset>
+</main>
+
+<p class="footnote">Roda 100% no seu navegador — nenhuma planilha é enviada a servidor algum. · <a href="../">← Voltar ao FrontCore</a></p>
+
+<script src="js/app.js"></script>
+<script type="module" src="../assets/js/help-widget.js"></script>
+</body>
+</html>

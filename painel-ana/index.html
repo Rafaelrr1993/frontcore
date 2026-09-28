@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel ANA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+<link rel="stylesheet" href="../assets/help-widget.css">
+<link rel="stylesheet" href="../assets/placeholder.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="back" href="../">← FrontCore</a>
+    <h1>Painel ANA</h1>
+  </div>
+</header>
+
+<main>
+  <span class="status-pill">Em breve</span>
+  <p>
+    Gerenciador de Pendências ANA — hoje já existe como programa local
+    (Node.js), conectando direto no Postgres de cada loja pela rede
+    interna dela.
+  </p>
+  <p>
+    Pra virar um módulo daqui do FrontCore, falta resolver duas coisas
+    antes:
+  </p>
+  <ul>
+    <li><strong>Alcance de rede:</strong> uma ponte segura (túnel/VPN) entre a nuvem e a rede de cada loja — hoje o banco só é alcançável de dentro da própria loja.</li>
+    <li><strong>Segurança:</strong> o programa atual guarda senha de banco em texto simples e executa qualquer SQL que o navegador mandar — precisa de autenticação e permissões de verdade antes de qualquer exposição além da rede local.</li>
+  </ul>
+  <p>Essa é uma conversa de arquitetura à parte — este espaço já fica reservado pra quando ela avançar.</p>
+</main>
+
+<p class="footnote"><a href="../">← Voltar ao FrontCore</a></p>
+
+<script type="module" src="../assets/js/help-widget.js"></script>
+</body>
+</html>

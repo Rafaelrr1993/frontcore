@@ -1,0 +1,72 @@
+/* placeholder.css — estilo compartilhado pelas páginas de módulo "em
+   breve" (ainda sem funcionalidade real). Usa os tokens de theme.css. */
+
+body { font-family: var(--font-body); }
+
+a.back {
+  color: var(--on-primary);
+  opacity: 0.85;
+  text-decoration: none;
+  font-size: 13px;
+}
+a.back:hover { opacity: 1; text-decoration: underline; }
+
+header.topbar {
+  background: var(--primary);
+  color: var(--on-primary);
+  padding: var(--space-m) var(--space-l);
+}
+
+.topbar-inner {
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-s) var(--space-l);
+}
+
+.topbar-inner h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+}
+
+main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--space-xxl) var(--space-l);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-l);
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-l);
+  border-radius: 999px;
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+main p { margin: 0; line-height: 1.6; color: var(--on-surface-variant); max-width: 60ch; }
+
+main ul { margin: 0; padding-left: 1.3em; line-height: 1.7; color: var(--on-surface-variant); }
+main ul strong { color: var(--on-surface); }
+
+.footnote {
+  font-size: 12px;
+  color: var(--outline);
+  text-align: center;
+  padding: var(--space-xxl) 0 var(--space-xxl);
+  width: 100%;
+}
+.footnote a { color: var(--outline); }
