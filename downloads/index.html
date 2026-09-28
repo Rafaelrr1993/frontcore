@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Downloads</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+<link rel="stylesheet" href="../assets/help-widget.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="back" href="../">← FrontCore</a>
+    <h1>Downloads</h1>
+    <span class="subtitle">Programas, drivers e ferramentas de suporte da Avanço</span>
+  </div>
+</header>
+
+<main>
+  <section class="intro">
+    <p>
+      Arquivos organizados por categoria. São as versões usadas/testadas
+      hoje pela Avanço — clique pra baixar direto, sem precisar procurar
+      em outro lugar.
+    </p>
+  </section>
+
+  <div class="category-grid">
+
+    <fieldset class="category">
+      <legend>Balanças</legend>
+      <p class="desc">Testadores de balança usados na instalação/diagnóstico do PDV.</p>
+      <ul class="file-list">
+        <li><a href="balanca/Avanco%20Teste%20Balanca.exe" download><span class="fname">Avanco Teste Balanca.exe</span><span class="fsize">24 KB</span></a></li>
+        <li><a href="balanca/BalancaTeste.exe" download><span class="fname">BalancaTeste.exe</span><span class="fsize">464 KB</span></a></li>
+      </ul>
+    </fieldset>
+
+    <fieldset class="category">
+      <legend>Impressoras / SAT</legend>
+      <p class="desc">Driver USB e tabela de comandos de impressora fiscal/não fiscal.</p>
+      <ul class="file-list">
+        <li><a href="impressoras/TMUSB_DeviceDriver_v8.00b.exe" download><span class="fname">TMUSB_DeviceDriver_v8.00b.exe</span><span class="fsize">1,1 MB</span></a></li>
+        <li><a href="impressoras/OK_impressorasat.ini" download><span class="fname">OK_impressorasat.ini</span><span class="fsize">20 KB</span></a></li>
+      </ul>
+      <p class="pending-note">Driver da Epson TM-T20/TM-T20X: veja em "Arquivos grandes", abaixo.</p>
+    </fieldset>
+
+    <fieldset class="category">
+      <legend>Pinpad</legend>
+      <p class="desc">Instalador de driver do pinpad Gertec.</p>
+      <ul class="file-list">
+        <li><a href="pinpad/Gertec-Full-Installer_2.1.0.9.exe" download><span class="fname">Gertec-Full-Installer_2.1.0.9.exe</span><span class="fsize">12 MB</span></a></li>
+      </ul>
+    </fieldset>
+
+    <fieldset class="category">
+      <legend>Serviços Postgres</legend>
+      <p class="desc">Serviços internos (.jar) usados na integração com o Postgres da loja.</p>
+      <ul class="file-list">
+        <li><a href="servicos-postgres/Servico.jar" download><span class="fname">Servico.jar</span><span class="fsize">5,5 MB</span></a></li>
+        <li><a href="servicos-postgres/Cliente-Servico.jar" download><span class="fname">Cliente-Servico.jar</span><span class="fsize">5,4 MB</span></a></li>
+        <li><a href="servicos-postgres/old-Servico.jar" download><span class="fname">old-Servico.jar</span><span class="fsize">5,4 MB</span></a></li>
+        <li><a href="servicos-postgres/teste-Servico.jar" download><span class="fname">teste-Servico.jar</span><span class="fsize">6,8 MB</span></a></li>
+      </ul>
+    </fieldset>
+
+    <fieldset class="category">
+      <legend>Linux — Frente de Loja</legend>
+      <p class="desc">Config X11 (dois monitores) e instalação do Java pro PDV Linux.</p>
+      <ul class="file-list">
+        <li><a href="linux-frente-loja/.xinitrc" download><span class="fname">.xinitrc</span><span class="fsize">4 KB</span></a></li>
+        <li><a href="linux-frente-loja/xorg.conf-vesa" download><span class="fname">xorg.conf-vesa</span><span class="fsize">16 KB</span></a></li>
+        <li><a href="linux-frente-loja/inst_java.sh" download><span class="fname">inst_java.sh</span><span class="fsize">4 KB</span></a></li>
+      </ul>
+      <p class="pending-note">No <code>.xinitrc</code>, a senha do VNC foi trocada por um placeholder — defina a sua antes de usar em produção.</p>
+    </fieldset>
+
+    <fieldset class="category">
+      <legend>Requisitos GSurf</legend>
+      <p class="desc">Verificador de requisitos de rede/conectividade (com as DLLs do Visual C++ que ele precisa).</p>
+      <ul class="file-list">
+        <li><a href="requisitos-gsurf/RequisitosGSurf.exe" download><span class="fname">RequisitosGSurf.exe</span><span class="fsize">1,1 MB</span></a></li>
+        <li><a href="requisitos-gsurf/msvcr120.dll" download><span class="fname">msvcr120.dll</span><span class="fsize">952 KB</span></a></li>
+        <li><a href="requisitos-gsurf/msvcp120.dll" download><span class="fname">msvcp120.dll</span><span class="fsize">448 KB</span></a></li>
+      </ul>
+    </fieldset>
+
+    <fieldset class="category">
+      <legend>Ferramentas e utilitários</legend>
+      <p class="desc">Ferramentas internas + as versões de terceiros já testadas/validadas pra uso em cliente (não são necessariamente a versão mais nova do site do fabricante — de propósito).</p>
+      <ul class="file-list">
+        <li><a href="ferramentas-internas/IntegPaf.jar" download><span class="fname">IntegPaf.jar</span><span class="fsize">11 MB</span></a></li>
+        <li><a href="ferramentas-internas/Busca_Pre%C3%A7o__Gerenciador_de_Terminal_ServUni_Windows.exe" download><span class="fname">Busca_Preço__Gerenciador_de_Terminal_ServUni_Windows.exe</span><span class="fsize">9,7 MB</span></a></li>
+        <li><a href="ferramentas-internas/DBFPlus.exe" download><span class="fname">DBFPlus.exe</span><span class="fsize">2,8 MB</span></a></li>
+        <li><a href="ferramentas-internas/renomear-tudo.exe" download><span class="fname">renomear-tudo.exe</span><span class="fsize">1,7 MB</span></a></li>
+        <li><a href="ferramentas-internas/DRCOM232.exe" download><span class="fname">DRCOM232.exe</span><span class="fsize">484 KB</span></a></li>
+        <li><a href="ferramentas-internas/CesarFTP.exe" download><span class="fname">CesarFTP.exe</span><span class="fsize">1,3 MB</span></a></li>
+        <li><a href="ferramentas-internas/DEIXAR_AGENTE_ONLINE.bat" download><span class="fname">DEIXAR_AGENTE_ONLINE.bat</span><span class="fsize">1 KB</span></a></li>
+        <li><a href="ferramentas-internas/HttpRequest.dll" download><span class="fname">HttpRequest.dll</span><span class="fsize">504 KB</span></a></li>
+        <li><a href="ferramentas-internas/Git-2.49.0-64-bit.exe" download><span class="fname">Git-2.49.0-64-bit.exe</span><span class="fsize">68 MB</span></a></li>
+        <li><a href="ferramentas-internas/node-v22.14.0-x64.msi" download><span class="fname">node-v22.14.0-x64.msi</span><span class="fsize">30 MB</span></a></li>
+        <li><a href="ferramentas-internas/npp.8.6.9.Installer.x64.exe" download><span class="fname">npp.8.6.9.Installer.x64.exe</span><span class="fsize">6,3 MB</span></a></li>
+        <li><a href="ferramentas-internas/Thunderbird%20Setup%20140.0.exe" download><span class="fname">Thunderbird Setup 140.0.exe</span><span class="fsize">71 MB</span></a></li>
+        <li><a href="ferramentas-internas/anydesk-6-1-4.exe" download><span class="fname">anydesk-6-1-4.exe</span><span class="fsize">3,6 MB</span></a></li>
+        <li><a href="ferramentas-internas/rustdesk-1.4.3-x86_64.exe" download><span class="fname">rustdesk-1.4.3-x86_64.exe</span><span class="fsize">23 MB</span></a></li>
+        <li><a href="ferramentas-internas/WinSCP.exe" download><span class="fname">WinSCP.exe</span><span class="fsize">19 MB</span></a></li>
+        <li><a href="ferramentas-internas/putty-64bit-0.81-installer.msi" download><span class="fname">putty-64bit-0.81-installer.msi</span><span class="fsize">3,6 MB</span></a></li>
+        <li><a href="ferramentas-internas/putty.exe" download><span class="fname">putty.exe</span><span class="fsize">1,3 MB</span></a></li>
+        <li><a href="ferramentas-internas/FortiClientVPNInstaller.exe" download><span class="fname">FortiClientVPNInstaller.exe</span><span class="fsize">4,4 MB</span></a></li>
+        <li><a href="ferramentas-internas/UltraVNC_32bit_v1.3.2.exe" download><span class="fname">UltraVNC_32bit_v1.3.2.exe</span><span class="fsize">3,1 MB</span></a></li>
+        <li><a href="ferramentas-internas/VNC-Viewer-6.21.406-Windows.exe" download><span class="fname">VNC-Viewer-6.21.406-Windows.exe</span><span class="fsize">11 MB</span></a></li>
+        <li><a href="ferramentas-internas/vncviewer.exe" download><span class="fname">vncviewer.exe</span><span class="fsize">3,1 MB</span></a></li>
+        <li><a href="ferramentas-internas/pgadmin3.msi" download><span class="fname">pgadmin3.msi</span><span class="fsize">14 MB</span></a></li>
+        <li><a href="ferramentas-internas/sqlite3.exe" download><span class="fname">sqlite3.exe</span><span class="fsize">972 KB</span></a></li>
+        <li><a href="ferramentas-internas/sqlitestudio-2.1.5.exe" download><span class="fname">sqlitestudio-2.1.5.exe</span><span class="fsize">5,3 MB</span></a></li>
+        <li><a href="ferramentas-internas/mdb-viewer-plus-2.63-installer.exe" download><span class="fname">mdb-viewer-plus-2.63-installer.exe</span><span class="fsize">5,3 MB</span></a></li>
+        <li><a href="ferramentas-internas/rufus.exe" download><span class="fname">rufus.exe</span><span class="fsize">1,6 MB</span></a></li>
+        <li><a href="ferramentas-internas/jre-8u301-windows-x64%20(1).exe" download><span class="fname">jre-8u301-windows-x64 (1).exe</span><span class="fsize">82 MB</span></a></li>
+      </ul>
+    </fieldset>
+
+    <fieldset class="category">
+      <legend>Arquivos grandes (em breve)</legend>
+      <p class="desc">Passam de 100MB — hospedados à parte (GitHub Release). Volto a ativar os links assim que estiverem no ar.</p>
+      <ul class="file-list">
+        <li><span class="fname">driver-epson-tm-t20-tm-t20x.zip</span><span class="fsize">173 MB</span></li>
+        <li><span class="fname">Postman-win64-Setup.exe</span><span class="fsize">130 MB</span></li>
+        <li><span class="fname">VirtualBox-7.0.20-163906-Win.exe</span><span class="fsize">106 MB</span></li>
+        <li><span class="fname">VirtualBox-7.2.6-172322-Win.exe</span><span class="fsize">116 MB</span></li>
+        <li><span class="fname">VSCodeUserSetup-x64-1.99.2.exe</span><span class="fsize">103 MB</span></li>
+        <li><span class="fname">pgadmin4-5.6-x64.exe</span><span class="fsize">141 MB</span></li>
+      </ul>
+    </fieldset>
+
+  </div>
+</main>
+
+<p class="footnote">Arquivos hospedados no próprio repositório do FrontCore. · <a href="../">← Voltar ao FrontCore</a></p>
+
+<script type="module" src="../assets/js/help-widget.js"></script>
+</body>
+</html>
