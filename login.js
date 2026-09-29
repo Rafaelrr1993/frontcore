@@ -60,5 +60,8 @@ formNewpass.addEventListener("submit", (e) => {
     return;
   }
   newpassError.hidden = true;
+  // Marca essa aba como "logada" (só dura a sessão do navegador) — é o que
+  // o portão simples nas outras páginas confere antes de deixar entrar.
+  sessionStorage.setItem("frontcore_logado", "1");
   showView(viewDone);
 });

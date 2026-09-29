@@ -2,6 +2,12 @@
 <html lang="pt-BR" data-theme="light">
 <head>
 <meta charset="utf-8">
+<script>
+  // Portão simples: se essa aba não passou pelo login, volta pro início.
+  // Não é autenticação de verdade (site estático, sem servidor) — só evita
+  // o acesso casual direto por link, sem passar pela tela de login.
+  if (sessionStorage.getItem("frontcore_logado") !== "1") location.replace("../../");
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Downloads — Pinpad</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
