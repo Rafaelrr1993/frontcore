@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="../assets/theme.css">
 <link rel="stylesheet" href="../assets/help-widget.css">
 <link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 <body>
 
@@ -17,22 +18,19 @@
   <div class="topbar-inner">
     <a class="back" href="../home/">← FrontCore</a>
     <h1>Confere Diferença</h1>
-    <span class="subtitle">Compara Integral × Tramitador e acha os cupons que não batem</span>
+    <span class="subtitle">Compara Integral e Tramitador e acha os cupons que não batem</span>
   </div>
 </header>
 
 <main>
   <section class="intro">
-    <span class="status-pill">Em construção</span>
+    <span class="status-pill">Disponível</span>
     <p style="margin-top: var(--space-m);">
-      Hoje essa comparação é feita na mão: pega a coluna da NFC-e da
-      planilha do ERP Integral, pega a mesma coluna na planilha do
-      tramitador, e vai conferindo verdadeiro/falso pra achar qual cupom
-      ou nota está diferente entre os dois. Esta página vai fazer isso
-      automaticamente — você escolhe qual arquivo é qual (os layouts são
-      diferentes e o nome muda a cada exportação), ela cruza os dois e
-      mostra só o que não bate, incluindo os outros campos além da
-      NFC-e (valor, status, data).
+      Escolha os dois arquivos e diga qual é qual (o layout de cada um é
+      diferente e o nome muda a cada exportação) — ela cruza os dois pela
+      NFC-e e mostra só os cupons/notas que não batem: os que faltam de um
+      lado, os que estão com status diferente no Tramitador (cancelada,
+      rejeitada, etc.) e os que têm valor divergente.
     </p>
   </section>
 
@@ -69,11 +67,34 @@
     </div>
     <p class="status-msg" id="status-msg" hidden></p>
   </fieldset>
+
+  <section class="resultado" id="resultado" hidden>
+    <div class="resultado-topo">
+      <p class="resumo" id="resumo"></p>
+      <button type="button" class="btn btn-secondary" id="btn-exportar" hidden>Exportar CSV</button>
+    </div>
+    <div class="tabela-wrap" id="tabela-wrap" hidden>
+      <table id="tabela-diffs">
+        <thead>
+          <tr>
+            <th>NFCe</th>
+            <th>Diferença</th>
+            <th>Detalhe</th>
+            <th>Valor Integral</th>
+            <th>Valor Tramitador</th>
+            <th>Docum / Doc.PDV</th>
+            <th>Data</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
 </main>
 
 <p class="footnote">Roda 100% no seu navegador — nenhuma planilha é enviada a servidor algum. · <a href="../home/">← Voltar ao FrontCore</a></p>
 
-<script src="js/app.js"></script>
+<script type="module" src="js/app.js"></script>
 <script type="module" src="../assets/js/help-widget.js"></script>
 </body>
 </html>

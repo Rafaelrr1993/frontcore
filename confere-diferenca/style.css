@@ -17,7 +17,7 @@ header.topbar {
 }
 
 .topbar-inner {
-  max-width: 720px;
+  max-width: 960px;
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
@@ -52,7 +52,7 @@ header.topbar {
 }
 
 main {
-  max-width: 720px;
+  max-width: 960px;
   margin: 0 auto;
   padding: var(--space-xl) var(--space-l) var(--space-xxl);
   display: flex;
@@ -143,6 +143,64 @@ fieldset.step legend {
   color: var(--on-tertiary-container);
 }
 .status-msg[hidden] { display: none; }
+
+.resultado {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+}
+
+.resultado-topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-m);
+}
+
+.resumo {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--on-surface);
+}
+
+.tabela-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--outline-variant);
+  border-radius: 12px;
+  background: var(--surface-container-low);
+}
+
+#tabela-diffs {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+#tabela-diffs th,
+#tabela-diffs td {
+  padding: var(--space-s) var(--space-m);
+  text-align: left;
+  border-bottom: 1px solid var(--outline-variant);
+}
+
+#tabela-diffs th {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--on-surface-variant);
+  background: var(--surface-container);
+  position: sticky;
+  top: 0;
+}
+
+#tabela-diffs td:nth-child(3) { white-space: normal; min-width: 260px; }
+
+#tabela-diffs tbody tr:hover { background: var(--surface-container); }
 
 .footnote {
   font-size: 12px;
