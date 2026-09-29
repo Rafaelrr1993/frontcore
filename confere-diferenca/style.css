@@ -17,7 +17,7 @@ header.topbar {
 }
 
 .topbar-inner {
-  max-width: 960px;
+  max-width: 1320px;
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
@@ -52,7 +52,7 @@ header.topbar {
 }
 
 main {
-  max-width: 960px;
+  max-width: 1320px;
   margin: 0 auto;
   padding: var(--space-xl) var(--space-l) var(--space-xxl);
   display: flex;
@@ -176,7 +176,7 @@ fieldset.step legend {
   width: 100%;
   border-collapse: collapse;
   font-size: 13px;
-  white-space: nowrap;
+  table-layout: fixed;
 }
 
 #tabela-diffs th,
@@ -184,6 +184,8 @@ fieldset.step legend {
   padding: var(--space-s) var(--space-m);
   text-align: left;
   border-bottom: 1px solid var(--outline-variant);
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 #tabela-diffs th {
@@ -198,7 +200,16 @@ fieldset.step legend {
   top: 0;
 }
 
-#tabela-diffs td:nth-child(3) { white-space: normal; min-width: 260px; }
+/* NFCe, Valor Integral, Valor Tramitador, Docum, Caixa, Data — colunas
+   estreitas e curtas, não precisam do espaço largo do texto (Detalhe). */
+#tabela-diffs th:nth-child(1), #tabela-diffs td:nth-child(1) { width: 9%; }
+#tabela-diffs th:nth-child(2), #tabela-diffs td:nth-child(2) { width: 15%; }
+#tabela-diffs th:nth-child(3), #tabela-diffs td:nth-child(3) { width: 28%; }
+#tabela-diffs th:nth-child(4), #tabela-diffs td:nth-child(4) { width: 11%; }
+#tabela-diffs th:nth-child(5), #tabela-diffs td:nth-child(5) { width: 11%; }
+#tabela-diffs th:nth-child(6), #tabela-diffs td:nth-child(6) { width: 10%; }
+#tabela-diffs th:nth-child(7), #tabela-diffs td:nth-child(7) { width: 8%; }
+#tabela-diffs th:nth-child(8), #tabela-diffs td:nth-child(8) { width: 8%; }
 
 #tabela-diffs tbody tr:hover { background: var(--surface-container); }
 
