@@ -102,6 +102,7 @@ function renderResultado(diffs, totalIntegral, totalTramitador) {
       d.valorIntegral != null ? "R$ " + d.valorIntegral.toFixed(2) : "—",
       d.valorTramitador != null ? "R$ " + d.valorTramitador.toFixed(2) : "—",
       d.docum ?? "—",
+      d.caixa ?? "—",
       d.data ?? "—",
     ];
     for (const texto of celulas) {
@@ -122,11 +123,11 @@ function csvField(value) {
 }
 
 btnExportar.addEventListener("click", async () => {
-  const cabecalho = ["NFCe", "Tipo", "Detalhe", "Valor Integral", "Valor Tramitador", "Docum/Doc.PDV", "Data"];
+  const cabecalho = ["NFCe", "Tipo", "Detalhe", "Valor Integral", "Valor Tramitador", "Docum/Doc.PDV", "Caixa/Série", "Data"];
   const linhas = [cabecalho.map(csvField).join(";")];
   for (const d of ultimosDiffs) {
     linhas.push(
-      [d.nfce, d.tipo, d.detalhe, d.valorIntegral ?? "", d.valorTramitador ?? "", d.docum ?? "", d.data ?? ""]
+      [d.nfce, d.tipo, d.detalhe, d.valorIntegral ?? "", d.valorTramitador ?? "", d.docum ?? "", d.caixa ?? "", d.data ?? ""]
         .map(csvField)
         .join(";")
     );

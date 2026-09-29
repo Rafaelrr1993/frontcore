@@ -57,6 +57,7 @@ export function parseIntegral(rows) {
   const colValor = acharColuna(header, "Valor");
   const colDocum = acharColuna(header, "Docum");
   const colLj = acharColuna(header, "Lj");
+  const colCx = acharColuna(header, "CX");
   const colData = acharColuna(header, "Data");
   const colHora = acharColuna(header, "Hora");
   const colTipo = acharColuna(header, "Tipo");
@@ -76,6 +77,7 @@ export function parseIntegral(rows) {
       nfce,
       docum: colDocum >= 0 ? row[colDocum] : null,
       lj: colLj >= 0 ? row[colLj] : null,
+      cx: colCx >= 0 ? row[colCx] : null,
       data: colData >= 0 ? row[colData] : null,
       hora: colHora >= 0 ? row[colHora] : null,
       valor: normalizarValor(colValor >= 0 ? row[colValor] : null),
@@ -102,6 +104,7 @@ export function parseTramitador(rows) {
 
   const colNnf = acharColuna(header, "NNF");
   const colDocPdv = acharColuna(header, "Doc. PDV", "Doc PDV");
+  const colSerie = acharColuna(header, "Série", "Serie");
   const colSituacaoCod = acharColuna(header, "Situação", "Situacao");
   const colSituacaoTexto = colSituacaoCod >= 0 ? colSituacaoCod + 1 : -1;
   const colValorTotal = acharColuna(header, "Valor Total");
@@ -133,6 +136,7 @@ export function parseTramitador(rows) {
     const doc = {
       nnf,
       docPdv: colDocPdv >= 0 ? row[colDocPdv] : null,
+      serie: colSerie >= 0 ? row[colSerie] : null,
       situacao,
       valor: normalizarValor(colValorTotal >= 0 ? row[colValorTotal] : null),
       chave,
@@ -168,6 +172,7 @@ export function comparar(integral, tramitador) {
         valorTramitador: null,
         situacaoTramitador: null,
         docum: venda.docum,
+        caixa: venda.cx,
         data: venda.data,
         hora: venda.hora,
       });
@@ -183,6 +188,7 @@ export function comparar(integral, tramitador) {
         valorTramitador: doc.valor,
         situacaoTramitador: doc.situacao,
         docum: venda.docum,
+        caixa: doc.serie ?? venda.cx,
         data: venda.data,
         hora: venda.hora,
       });
@@ -198,6 +204,7 @@ export function comparar(integral, tramitador) {
         valorTramitador: doc.valor,
         situacaoTramitador: doc.situacao,
         docum: venda.docum,
+        caixa: doc.serie ?? venda.cx,
         data: venda.data,
         hora: venda.hora,
       });
@@ -218,6 +225,7 @@ export function comparar(integral, tramitador) {
       valorTramitador: doc.valor,
       situacaoTramitador: doc.situacao,
       docum: doc.docPdv,
+      caixa: doc.serie,
       data: doc.dataEmissao,
       hora: null,
     });
