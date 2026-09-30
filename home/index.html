@@ -80,6 +80,31 @@
     border-color: var(--primary);
   }
 
+  .quicklinks {
+    position: fixed;
+    top: var(--space-l);
+    left: var(--space-l);
+    z-index: 2;
+    display: flex;
+    gap: var(--space-s);
+  }
+
+  .quicklink {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--on-surface-variant);
+    text-decoration: none;
+    padding: var(--space-xs) var(--space-m);
+    border-radius: 999px;
+    border: 1px solid var(--outline-variant);
+    background: var(--surface-container-low);
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .quicklink:hover, .quicklink:focus-visible {
+    color: var(--primary);
+    border-color: var(--primary);
+  }
+
   .eyebrow {
     display: inline-flex;
     align-items: center;
@@ -299,6 +324,10 @@
 <div class="halo"></div>
 
 <a class="login-link" href="../" onclick="sessionStorage.removeItem('frontcore_logado')">Sair</a>
+
+<div class="quicklinks">
+  <a class="quicklink" href="https://sitefexpressadm.softwareexpress.com.br/sitefwebadm/pages/inicial.zeus" target="_blank" rel="noopener noreferrer">SiteF ↗</a>
+</div>
 
 <div class="hero">
   <span class="eyebrow">Avanço · Plataforma</span>
