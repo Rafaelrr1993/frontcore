@@ -1,8 +1,10 @@
 // -----------------------------------------------------------------------
-// comparador.js — cruza a planilha do ERP Integral com o relatório do
-// Tramitador pela coluna da NFC-e, e acha os cupons/notas que não batem.
+// comparador.js — cruza a planilha de origem da loja (ERP Integral ou a
+// Saída do novo Avanço) com o relatório do Tramitador, e acha os
+// cupons/notas que não batem entre os dois.
 //
-// Integral: cada linha é uma venda concluída no PDV/ERP da loja.
+// Origem (Integral ou Saída): cada linha é uma venda concluída no
+// PDV/ERP da loja.
 // Tramitador: lista tudo que foi processado na SEFAZ no período — inclui
 // documentos de outro modelo (NF-e, não cupom), números inutilizados,
 // rejeições e reprocessamentos do mesmo número de nota. Por isso, antes
@@ -10,6 +12,16 @@
 // NFC-e — o campo "modelo" vem embutido na Chave de Acesso, posições
 // 21-22) e, quando o mesmo número de nota aparece mais de uma vez
 // (reprocessamento), fica com a versão autorizada.
+//
+// Integral e Saída têm layouts (e nomes de arquivo) diferentes entre si,
+// e cada um cruza com o Tramitador por uma chave diferente:
+// - Integral não tem a Chave de Acesso, só o número puro da NFC-e — e
+//   nessa loja esse número já é único sozinho, então cruza direto com o
+//   NNF do Tramitador.
+// - Saída tem a Chave de Acesso completa (Chave_Nota) — e o número da
+//   nota sozinho SE REPETE entre caixas diferentes (cada um com sua
+//   própria numeração), então só a chave completa é um identificador
+//   confiável pra cruzar com o Tramitador.
 // -----------------------------------------------------------------------
 
 function normalizarValor(str) {
@@ -88,11 +100,76 @@ export function parseIntegral(rows) {
   return porNfce;
 }
 
+/** Converte um serial de data do Excel (dias desde 30/12/1899) pro mesmo
+ * formato "DD/MM/AAAA HH:MM:SS" usado nos outros arquivos. A planilha de
+ * Saída grava a data como número formatado (não como texto), diferente
+ * do Integral/Tramitador. */
+function converterDataExcel(serial) {
+  if (typeof serial !== "number" || Number.isNaN(serial)) return null;
+  const d = new Date(Math.round((serial - 25569) * 86400 * 1000));
+  const p = (n) => String(n).padStart(2, "0");
+  return `${p(d.getUTCDate())}/${p(d.getUTCMonth() + 1)}/${d.getUTCFullYear()} ${p(d.getUTCHours())}:${p(d.getUTCMinutes())}:${p(d.getUTCSeconds())}`;
+}
+
+/** Extrai as vendas da planilha de Saída do novo Avanço, indexadas pela
+ * Chave de Acesso completa (o número da nota sozinho se repete entre
+ * caixas diferentes, então não serve como chave única aqui). */
+export function parseSaida(rows) {
+  const headerIdx = acharLinhaCabecalho(rows, "numero_nota");
+  if (headerIdx === -1) {
+    throw new Error(
+      'Não encontrei o cabeçalho da Saída (esperava a coluna "Numero_Nota" na primeira posição). Confirma se esse é mesmo o relatório de Saída do novo Avanço?'
+    );
+  }
+  const header = rows[headerIdx];
+
+  const colNumero = acharColuna(header, "Numero_Nota");
+  const colSerie = acharColuna(header, "Serie", "Série");
+  const colData = acharColuna(header, "Data_Emissao", "Data_Emissão");
+  const colChave = acharColuna(header, "Chave_Nota", "Chave Nota", "Chave_Acesso", "Chave Acesso");
+  const colValor = acharColuna(header, "Preco_Total", "Preço_Total", "Preco Total", "Preço Total");
+  const colStatus = acharColuna(header, "Status");
+
+  if (colChave === -1) {
+    throw new Error('Não encontrei a coluna "Chave_Nota" no arquivo de Saída — preciso dela pra cruzar com o Tramitador.');
+  }
+
+  const porChave = new Map();
+  for (let i = headerIdx + 1; i < rows.length; i++) {
+    const row = rows[i];
+    if (!row || row[colChave] == null || row[colChave] === "") continue;
+
+    const chave = String(row[colChave]).trim();
+    const modelo = chave.length >= 22 ? chave.slice(20, 22) : "";
+    if (modelo === "55") continue; // NF-e normal (não é cupom) — fora da comparação
+
+    const dataBruta = colData >= 0 ? row[colData] : null;
+    porChave.set(chave, {
+      chave,
+      numeroNota: colNumero >= 0 ? row[colNumero] : null,
+      serie: colSerie >= 0 ? row[colSerie] : null,
+      data: typeof dataBruta === "number" ? converterDataExcel(dataBruta) : dataBruta,
+      valor: normalizarValor(colValor >= 0 ? row[colValor] : null),
+      status: colStatus >= 0 ? row[colStatus] : null,
+    });
+  }
+  return porChave;
+}
+
 const SITUACOES_VALIDAS = new Set(["AUTORIZADA", "AUTORIZADA FORA DO PRAZO"]);
 
 /** Extrai os documentos modelo 65 (cupom fiscal / NFC-e) do relatório do
- * Tramitador, indexados por número da nota (NNF) — já resolvendo
- * reprocessamentos (fica com a versão autorizada, quando existe). */
+ * Tramitador e devolve dois índices sobre os mesmos documentos:
+ * - `porNnf`: por número da nota (NNF) — já resolvendo reprocessamentos
+ *   (mesma nota, chave nova a cada tentativa; fica com a versão
+ *   autorizada). Usado pra comparar com o Integral.
+ * - `porChave`: pela Chave de Acesso completa, sem nenhuma resolução de
+ *   duplicidade (a chave já é única por natureza — embute NNF, série e
+ *   um código aleatório por tentativa). Usado pra comparar com a Saída,
+ *   já que ali o número da nota sozinho se repete entre caixas
+ *   diferentes — indexar só por NNF (como o `porNnf` faz) derrubaria
+ *   silenciosamente um documento real sempre que dois caixas emitissem
+ *   o mesmo número. */
 export function parseTramitador(rows) {
   const headerIdx = acharLinhaCabecalho(rows, "nnf");
   if (headerIdx === -1) {
@@ -121,6 +198,7 @@ export function parseTramitador(rows) {
   }
 
   const porNnf = new Map();
+  const porChave = new Map();
   for (let i = headerIdx + 1; i < rows.length; i++) {
     const row = rows[i];
     if (!row || row[colNnf] == null || row[colNnf] === "") continue;
@@ -147,15 +225,16 @@ export function parseTramitador(rows) {
     if (!existente || (!SITUACOES_VALIDAS.has(existente.situacao) && SITUACOES_VALIDAS.has(situacao))) {
       porNnf.set(nnf, doc);
     }
+    if (chave) porChave.set(chave, doc);
   }
-  return porNnf;
+  return { porNnf, porChave };
 }
 
 const TOLERANCIA_VALOR = 0.01;
 
 /** Cruza os dois mapas (por número da NFC-e) e devolve só as diferenças
  * — cupons/notas que não batem entre o Integral e o Tramitador. */
-export function comparar(integral, tramitador) {
+export function compararIntegralTramitador(integral, tramitador) {
   const diffs = [];
   const vistos = new Set();
 
@@ -168,7 +247,7 @@ export function comparar(integral, tramitador) {
         nfce,
         tipo: "Não encontrado no Tramitador",
         detalhe: "Tem venda no Integral, mas essa NFC-e não aparece no relatório do Tramitador.",
-        valorIntegral: venda.valor,
+        valorOrigem: venda.valor,
         valorTramitador: null,
         situacaoTramitador: null,
         docum: venda.docum,
@@ -184,7 +263,7 @@ export function comparar(integral, tramitador) {
         nfce,
         tipo: `Situação no Tramitador: ${doc.situacao || "desconhecida"}`,
         detalhe: `O Integral registra essa venda como concluída, mas no Tramitador ela está como "${doc.situacao}".`,
-        valorIntegral: venda.valor,
+        valorOrigem: venda.valor,
         valorTramitador: doc.valor,
         situacaoTramitador: doc.situacao,
         docum: venda.docum,
@@ -200,7 +279,7 @@ export function comparar(integral, tramitador) {
         nfce,
         tipo: "Valor diferente",
         detalhe: `Integral: R$ ${venda.valor.toFixed(2)} · Tramitador: R$ ${doc.valor.toFixed(2)}`,
-        valorIntegral: venda.valor,
+        valorOrigem: venda.valor,
         valorTramitador: doc.valor,
         situacaoTramitador: doc.situacao,
         docum: venda.docum,
@@ -221,7 +300,89 @@ export function comparar(integral, tramitador) {
       nfce: nnf,
       tipo: "Não encontrado no Integral",
       detalhe: "Está autorizada no Tramitador, mas essa NFC-e não aparece no Integral.",
-      valorIntegral: null,
+      valorOrigem: null,
+      valorTramitador: doc.valor,
+      situacaoTramitador: doc.situacao,
+      docum: doc.docPdv,
+      caixa: doc.serie,
+      data: doc.dataEmissao,
+      hora: null,
+    });
+  }
+
+  diffs.sort((a, b) => Number(a.nfce) - Number(b.nfce));
+  return diffs;
+}
+
+/** Cruza a Saída do novo Avanço com o Tramitador pela Chave de Acesso
+ * completa (ver comentário no topo do arquivo — o número da nota sozinho
+ * não é confiável aqui) e devolve só as diferenças. Recebe o índice
+ * `porChave` já pronto de `parseTramitador` (não o `porNnf`). */
+export function compararSaidaTramitador(saida, tramitadorPorChave) {
+  const diffs = [];
+  const vistos = new Set();
+
+  for (const [chave, venda] of saida) {
+    vistos.add(chave);
+    const doc = tramitadorPorChave.get(chave);
+
+    if (!doc) {
+      diffs.push({
+        nfce: venda.numeroNota,
+        tipo: "Não encontrado no Tramitador",
+        detalhe: "Tem saída registrada no novo Avanço, mas essa nota não aparece no relatório do Tramitador.",
+        valorOrigem: venda.valor,
+        valorTramitador: null,
+        situacaoTramitador: null,
+        docum: venda.numeroNota,
+        caixa: venda.serie,
+        data: venda.data,
+        hora: null,
+      });
+      continue;
+    }
+
+    if (!SITUACOES_VALIDAS.has(doc.situacao)) {
+      diffs.push({
+        nfce: venda.numeroNota,
+        tipo: `Situação no Tramitador: ${doc.situacao || "desconhecida"}`,
+        detalhe: `A Saída registra esse documento como concluído, mas no Tramitador ele está como "${doc.situacao}".`,
+        valorOrigem: venda.valor,
+        valorTramitador: doc.valor,
+        situacaoTramitador: doc.situacao,
+        docum: doc.docPdv ?? venda.numeroNota,
+        caixa: doc.serie ?? venda.serie,
+        data: venda.data,
+        hora: null,
+      });
+      continue;
+    }
+
+    if (venda.valor != null && doc.valor != null && Math.abs(venda.valor - doc.valor) > TOLERANCIA_VALOR) {
+      diffs.push({
+        nfce: venda.numeroNota,
+        tipo: "Valor diferente",
+        detalhe: `Saída: R$ ${venda.valor.toFixed(2)} · Tramitador: R$ ${doc.valor.toFixed(2)}`,
+        valorOrigem: venda.valor,
+        valorTramitador: doc.valor,
+        situacaoTramitador: doc.situacao,
+        docum: doc.docPdv ?? venda.numeroNota,
+        caixa: doc.serie ?? venda.serie,
+        data: venda.data,
+        hora: null,
+      });
+    }
+  }
+
+  // Notas autorizadas no Tramitador sem nenhum registro na Saída.
+  for (const [chave, doc] of tramitadorPorChave) {
+    if (vistos.has(chave)) continue;
+    if (!SITUACOES_VALIDAS.has(doc.situacao)) continue;
+    diffs.push({
+      nfce: doc.nnf,
+      tipo: "Não encontrado na Saída",
+      detalhe: "Está autorizada no Tramitador, mas esse documento não aparece na planilha de Saída.",
+      valorOrigem: null,
       valorTramitador: doc.valor,
       situacaoTramitador: doc.situacao,
       docum: doc.docPdv,

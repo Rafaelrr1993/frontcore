@@ -24,7 +24,7 @@
   <div class="topbar-inner">
     <a class="back" href="../home/">← FrontCore</a>
     <h1>Confere Diferença</h1>
-    <span class="subtitle">Compara Integral e Tramitador e acha os cupons que não batem</span>
+    <span class="subtitle">Compara Integral ou Saída com o Tramitador e acha os cupons que não batem</span>
   </div>
 </header>
 
@@ -33,10 +33,11 @@
     <span class="status-pill">Disponível</span>
     <p style="margin-top: var(--space-m);">
       Escolha os dois arquivos e diga qual é qual (o layout de cada um é
-      diferente e o nome muda a cada exportação) — ela cruza os dois pela
-      NFC-e e mostra só os cupons/notas que não batem: os que faltam de um
-      lado, os que estão com status diferente no Tramitador (cancelada,
-      rejeitada, etc.) e os que têm valor divergente.
+      diferente e o nome muda a cada exportação) — sempre um deles é o
+      Tramitador, e o outro é o Integral ou a Saída do novo Avanço. Ela
+      cruza os dois e mostra só os cupons/notas que não batem: os que
+      faltam de um lado, os que estão com status diferente no Tramitador
+      (cancelada, rejeitada, etc.) e os que têm valor divergente.
     </p>
   </section>
 
@@ -50,6 +51,7 @@
       <span class="fname" id="nome1">Nenhum arquivo selecionado</span>
       <select id="tipo1">
         <option value="integral">É do Integral</option>
+        <option value="saida">É da Saída (novo Avanço)</option>
         <option value="tramitador">É do Tramitador</option>
       </select>
     </div>
@@ -62,6 +64,7 @@
       <select id="tipo2">
         <option value="tramitador">É do Tramitador</option>
         <option value="integral">É do Integral</option>
+        <option value="saida">É da Saída (novo Avanço)</option>
       </select>
     </div>
   </fieldset>
@@ -86,7 +89,7 @@
             <th>NFCe</th>
             <th>Diferença</th>
             <th>Detalhe</th>
-            <th>Valor Integral</th>
+            <th id="th-valor-origem">Valor Integral</th>
             <th>Valor Tramitador</th>
             <th>Docum / Doc.PDV</th>
             <th>Caixa / Série</th>

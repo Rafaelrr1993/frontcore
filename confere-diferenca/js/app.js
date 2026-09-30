@@ -1,12 +1,22 @@
 // -----------------------------------------------------------------------
 // app.js — Confere Diferença. Lê os dois arquivos (papel de cada um
 // escolhido pelo usuário no <select>, já que o nome do arquivo muda a
-// cada exportação), cruza pela NFC-e e mostra só as diferenças.
+// cada exportação) e cruza o Tramitador com a outra planilha escolhida
+// (Integral ou Saída do novo Avanço — nunca as duas de uma vez), mostrando
+// só as diferenças.
 // -----------------------------------------------------------------------
 import { readXlsxRows } from "./xlsx-lite.js";
 import { readCsvRows } from "./csv-lite.js";
-import { parseIntegral, parseTramitador, comparar } from "./comparador.js";
+import {
+  parseIntegral,
+  parseSaida,
+  parseTramitador,
+  compararIntegralTramitador,
+  compararSaidaTramitador,
+} from "./comparador.js";
 import { saveCsv } from "./save-csv.js";
+
+const ORIGEM_LABEL = { integral: "Integral", saida: "Saída" };
 
 const input1 = document.getElementById("arquivo1");
 const input2 = document.getElementById("arquivo2");
@@ -43,20 +53,25 @@ async function lerLinhas(file) {
 }
 
 let ultimosDiffs = [];
+let ultimoOrigemTipo = "integral";
 
 btnComparar.addEventListener("click", async () => {
   resultado.hidden = true;
 
   if (!input1.files[0] || !input2.files[0]) {
-    mostrarStatus("Selecione os dois arquivos (Integral e Tramitador) antes de comparar.");
+    mostrarStatus("Selecione os dois arquivos antes de comparar.");
     return;
   }
-  if (tipo1.value === tipo2.value) {
-    mostrarStatus("Selecione um arquivo pra cada tipo — um do Integral e outro do Tramitador.");
+  const roles = [tipo1.value, tipo2.value];
+  const temTramitador = roles.includes("tramitador");
+  const origemTipo = tipo1.value !== "tramitador" ? tipo1.value : tipo2.value;
+  const origemValida = origemTipo === "integral" || origemTipo === "saida";
+  if (!temTramitador || tipo1.value === tipo2.value || !origemValida) {
+    mostrarStatus("Selecione um arquivo do Tramitador e outro do Integral ou da Saída (novo Avanço) — nunca dois do mesmo tipo.");
     return;
   }
 
-  const arquivoIntegral = tipo1.value === "integral" ? input1.files[0] : input2.files[0];
+  const arquivoOrigem = tipo1.value !== "tramitador" ? input1.files[0] : input2.files[0];
   const arquivoTramitador = tipo1.value === "tramitador" ? input1.files[0] : input2.files[0];
 
   btnComparar.disabled = true;
@@ -65,17 +80,26 @@ btnComparar.addEventListener("click", async () => {
     // cede o controle ao navegador antes do trabalho pesado, pra mensagem acima aparecer
     await new Promise((r) => setTimeout(r, 30));
 
-    const [linhasIntegral, linhasTramitador] = await Promise.all([
-      lerLinhas(arquivoIntegral),
+    const [linhasOrigem, linhasTramitador] = await Promise.all([
+      lerLinhas(arquivoOrigem),
       lerLinhas(arquivoTramitador),
     ]);
 
-    const integral = parseIntegral(linhasIntegral);
     const tramitador = parseTramitador(linhasTramitador);
-    const diffs = comparar(integral, tramitador);
+    let origem, diffs, totalTramitador;
+    if (origemTipo === "integral") {
+      origem = parseIntegral(linhasOrigem);
+      diffs = compararIntegralTramitador(origem, tramitador.porNnf);
+      totalTramitador = tramitador.porNnf.size;
+    } else {
+      origem = parseSaida(linhasOrigem);
+      diffs = compararSaidaTramitador(origem, tramitador.porChave);
+      totalTramitador = tramitador.porChave.size;
+    }
     ultimosDiffs = diffs;
+    ultimoOrigemTipo = origemTipo;
 
-    renderResultado(diffs, integral.size, tramitador.size);
+    renderResultado(diffs, origem.size, totalTramitador, origemTipo);
     statusMsg.hidden = true;
   } catch (e) {
     mostrarStatus("Erro: " + e.message);
@@ -84,10 +108,12 @@ btnComparar.addEventListener("click", async () => {
   }
 });
 
-function renderResultado(diffs, totalIntegral, totalTramitador) {
+function renderResultado(diffs, totalOrigem, totalTramitador, origemTipo) {
+  const label = ORIGEM_LABEL[origemTipo];
+  document.getElementById("th-valor-origem").textContent = `Valor ${label}`;
   resumo.textContent = diffs.length
-    ? `${totalIntegral} cupons no Integral · ${totalTramitador} no Tramitador · ${diffs.length} diferença(s) encontrada(s).`
-    : `${totalIntegral} cupons no Integral · ${totalTramitador} no Tramitador · nenhuma diferença encontrada — está tudo batendo.`;
+    ? `${totalOrigem} cupons na ${label} · ${totalTramitador} no Tramitador · ${diffs.length} diferença(s) encontrada(s).`
+    : `${totalOrigem} cupons na ${label} · ${totalTramitador} no Tramitador · nenhuma diferença encontrada — está tudo batendo.`;
 
   tabelaBody.innerHTML = "";
   tabelaWrap.hidden = diffs.length === 0;
@@ -99,7 +125,7 @@ function renderResultado(diffs, totalIntegral, totalTramitador) {
       d.nfce,
       d.tipo,
       d.detalhe,
-      d.valorIntegral != null ? "R$ " + d.valorIntegral.toFixed(2) : "—",
+      d.valorOrigem != null ? "R$ " + d.valorOrigem.toFixed(2) : "—",
       d.valorTramitador != null ? "R$ " + d.valorTramitador.toFixed(2) : "—",
       d.docum ?? "—",
       d.caixa ?? "—",
@@ -123,11 +149,11 @@ function csvField(value) {
 }
 
 btnExportar.addEventListener("click", async () => {
-  const cabecalho = ["NFCe", "Tipo", "Detalhe", "Valor Integral", "Valor Tramitador", "Docum/Doc.PDV", "Caixa/Série", "Data"];
+  const cabecalho = ["NFCe", "Tipo", "Detalhe", `Valor ${ORIGEM_LABEL[ultimoOrigemTipo]}`, "Valor Tramitador", "Docum/Doc.PDV", "Caixa/Série", "Data"];
   const linhas = [cabecalho.map(csvField).join(";")];
   for (const d of ultimosDiffs) {
     linhas.push(
-      [d.nfce, d.tipo, d.detalhe, d.valorIntegral ?? "", d.valorTramitador ?? "", d.docum ?? "", d.caixa ?? "", d.data ?? ""]
+      [d.nfce, d.tipo, d.detalhe, d.valorOrigem ?? "", d.valorTramitador ?? "", d.docum ?? "", d.caixa ?? "", d.data ?? ""]
         .map(csvField)
         .join(";")
     );
