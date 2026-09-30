@@ -80,46 +80,50 @@
     border-color: var(--primary);
   }
 
+  /* Lista de acessos rápidos a outros sites — em fluxo normal (não fixo)
+     pra poder crescer com quantos links forem precisos sem sobrepor o
+     resto da página; alinhada à esquerda dentro da mesma largura do
+     hero, um abaixo do outro. */
   .quicklinks {
-    position: fixed;
-    top: var(--space-l);
-    left: var(--space-l);
-    z-index: 2;
+    position: relative;
+    z-index: 1;
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     gap: var(--space-s);
+    max-width: 640px;
+    margin: 0 auto;
+    padding: var(--space-l) var(--space-l) 0;
   }
 
   .quicklink {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--on-surface-variant);
-    text-decoration: none;
-    padding: var(--space-xs) var(--space-m);
-    border-radius: 999px;
-    border: 1px solid var(--outline-variant);
-    background: var(--surface-container-low);
-    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
-  }
-  .quicklink:hover, .quicklink:focus-visible {
-    color: var(--primary);
-    border-color: var(--primary);
-  }
-
-  /* Cor própria do SiteF (laranja da marca), botão maior — pra se
-     destacar dos outros links neutros que possam entrar aqui depois. */
-  .quicklink-sitef {
     font-size: 15px;
     font-weight: 700;
+    text-decoration: none;
     padding: var(--space-s) var(--space-l);
+    border-radius: 999px;
+    border: 1px solid transparent;
+    transition: filter 0.15s ease, transform 0.15s ease;
+  }
+  .quicklink:hover, .quicklink:focus-visible {
+    filter: brightness(0.92);
+    transform: translateY(-1px);
+  }
+
+  /* Cor de cada site — mesma cor pros dois do SiteF (a marca é a
+     mesma), branco com azul Avanço pros sites da própria empresa. */
+  .quicklink-sitef {
     color: #fff;
     background: #ff6600;
-    border-color: #ff6600;
   }
-  .quicklink-sitef:hover, .quicklink-sitef:focus-visible {
+  .quicklink-gsurf {
     color: #fff;
-    background: #e05a00;
-    border-color: #e05a00;
-    transform: translateY(-1px);
+    background: #4f46e5;
+  }
+  .quicklink-avanco {
+    color: var(--primary);
+    background: #fff;
+    border-color: var(--primary);
   }
 
   .eyebrow {
@@ -343,6 +347,11 @@
 <a class="login-link" href="../" onclick="sessionStorage.removeItem('frontcore_logado')">Sair</a>
 
 <div class="quicklinks">
+  <a class="quicklink quicklink-avanco" href="https://www.avancao.com.br/suporte/atendimentos" target="_blank" rel="noopener noreferrer">Atendimento ↗</a>
+  <a class="quicklink quicklink-avanco" href="https://bc.avancoinfo.com.br/" target="_blank" rel="noopener noreferrer">BCAvanco ↗</a>
+  <a class="quicklink quicklink-gsurf" href="https://parceiros.gsurfnet.com/login/login" target="_blank" rel="noopener noreferrer">Gsurf ↗</a>
+  <a class="quicklink quicklink-avanco" href="https://novo.avancoinfo.com.br/" target="_blank" rel="noopener noreferrer">NovoAvanço ↗</a>
+  <a class="quicklink quicklink-sitef" href="https://portaldocliente.softwareexpress.com.br/Login" target="_blank" rel="noopener noreferrer">PortalSitef ↗</a>
   <a class="quicklink quicklink-sitef" href="https://sitefexpressadm.softwareexpress.com.br/sitefwebadm/pages/inicial.zeus" target="_blank" rel="noopener noreferrer">SiteF ↗</a>
 </div>
 
