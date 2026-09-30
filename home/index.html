@@ -98,11 +98,28 @@
     border-radius: 999px;
     border: 1px solid var(--outline-variant);
     background: var(--surface-container-low);
-    transition: color 0.15s ease, border-color 0.15s ease;
+    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
   }
   .quicklink:hover, .quicklink:focus-visible {
     color: var(--primary);
     border-color: var(--primary);
+  }
+
+  /* Cor própria do SiteF (laranja da marca), botão maior — pra se
+     destacar dos outros links neutros que possam entrar aqui depois. */
+  .quicklink-sitef {
+    font-size: 15px;
+    font-weight: 700;
+    padding: var(--space-s) var(--space-l);
+    color: #fff;
+    background: #ff6600;
+    border-color: #ff6600;
+  }
+  .quicklink-sitef:hover, .quicklink-sitef:focus-visible {
+    color: #fff;
+    background: #e05a00;
+    border-color: #e05a00;
+    transform: translateY(-1px);
   }
 
   .eyebrow {
@@ -326,7 +343,7 @@
 <a class="login-link" href="../" onclick="sessionStorage.removeItem('frontcore_logado')">Sair</a>
 
 <div class="quicklinks">
-  <a class="quicklink" href="https://sitefexpressadm.softwareexpress.com.br/sitefwebadm/pages/inicial.zeus" target="_blank" rel="noopener noreferrer">SiteF ↗</a>
+  <a class="quicklink quicklink-sitef" href="https://sitefexpressadm.softwareexpress.com.br/sitefwebadm/pages/inicial.zeus" target="_blank" rel="noopener noreferrer">SiteF ↗</a>
 </div>
 
 <div class="hero">
