@@ -80,10 +80,11 @@
     border-color: var(--primary);
   }
 
-  /* Lista de acessos rápidos a outros sites — em fluxo normal (não fixo)
-     pra poder crescer com quantos links forem precisos sem sobrepor o
-     resto da página; alinhada à esquerda dentro da mesma largura do
-     hero, um abaixo do outro. */
+  /* Lista de acessos rápidos a outros sites, um abaixo do outro. Em
+     telas estreitas/médias fica em fluxo normal (empurra o hero pra
+     baixo, mas não sobrepõe nada). Em telas largas vira uma coluna fixa
+     na margem esquerda (ver media query abaixo), pra não afastar o
+     "FrontCore" do centro só porque a lista cresceu. */
   .quicklinks {
     position: relative;
     z-index: 1;
@@ -94,6 +95,18 @@
     max-width: 640px;
     margin: 0 auto;
     padding: var(--space-l) var(--space-l) 0;
+  }
+
+  @media (min-width: 1100px) {
+    .quicklinks {
+      position: fixed;
+      top: var(--space-l);
+      left: var(--space-l);
+      max-width: none;
+      margin: 0;
+      padding: 0;
+      z-index: 2;
+    }
   }
 
   .quicklink {
